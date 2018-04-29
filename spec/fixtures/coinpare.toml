@@ -1,0 +1,20 @@
+
+[[holdings]]
+amount = 1.25
+name = "BTC"
+price = 8000.0
+
+[[holdings]]
+amount = 4.0
+name = "ETH"
+price = 600.0
+
+[[holdings]]
+amount = 2000.0
+name = "TRX"
+price = 0.02
+
+[settings]
+base = "USD"
+color = true
+exchange = "CCCAGG"
