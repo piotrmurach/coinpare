@@ -4,6 +4,8 @@ require 'open3'
 require 'webmock/rspec'
 require 'timecop'
 
+ENV['THOR_COLUMNS'] = '80'
+
 module TestHelpers
   module Paths
     def gem_root
