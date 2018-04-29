@@ -2,7 +2,7 @@
 
 [![Gem Version](https://badge.fury.io/rb/coinpare.svg)][gem]
 [![Build Status](https://secure.travis-ci.org/piotrmurach/coinpare.svg?branch=master)][travis]
-[![Build status](https://ci.appveyor.com/api/projects/status/2383i0dn3hlw9cnn?svg=true)][appveyor]
+[![Build status](https://ci.appveyor.com/api/projects/status/dsd3cone86it12pi?svg=true)][appveyor]
 [![Maintainability](https://api.codeclimate.com/v1/badges/1072406ba7e951e355e4/maintainability)][codeclimate]
 [![Coverage Status](https://coveralls.io/repos/github/piotrmurach/coinpare/badge.svg)][coverage]
 [![Inline docs](http://inch-ci.org/github/piotrmurach/coinpare.svg?branch=master)][inchpages]
