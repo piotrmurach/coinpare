@@ -1,4 +1,10 @@
+require 'tty-screen'
+
 RSpec.describe "`coinpare coins` command", type: :cli do
+  before(:each) do
+    allow(TTY::Screen).to receive(:width).and_return(200)
+  end
+
   it "displays usage info" do
     output = <<-OUT
 Usage:

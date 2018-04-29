@@ -1,4 +1,10 @@
+require 'tty-screen'
+
 RSpec.describe "`coinpare holdings` command", type: :cli do
+  before(:each) do
+    allow(TTY::Screen).to receive(:width).and_return(200)
+  end
+
   it "executes `holdings --help` command successfully" do
     output = `coinpare holdings --help`
     expect(output).to eq <<-OUT
