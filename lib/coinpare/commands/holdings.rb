@@ -117,8 +117,11 @@ module Coinpare
         settings = config.fetch('settings')
         table = TTY::Table.new(header: [
           { value: 'Coin', alignment: :left },
+          'Amount',
           'Buy Price',
+          'Total Buy Price',
           'Price',
+          'Total Price',
           'Change',
           'Change%'
         ])
@@ -134,7 +137,10 @@ module Coinpare
 
           coin_details = [
             { value: add_color(coin['name'], :yellow), alignment: :left },
+            coin['amount'],
+            "#{to_symbol} #{coin['price'].round(2)}",
             "#{to_symbol} #{past_price.round(2)}",
+            add_color("#{to_symbol} #{coin_data['PRICE'].round(2)}", pick_color(growing)),
             add_color("#{to_symbol} #{curr_price.round(2)}", pick_color(growing)),
             add_color("#{arrow} #{to_symbol} #{(curr_price - coin['price']).round(2)}",
                       pick_color(growing)),
