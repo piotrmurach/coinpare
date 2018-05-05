@@ -1,3 +1,11 @@
+if ENV['COVERAGE'] || ENV['TRAVIS']
+  require 'simplecov'
+
+  SimpleCov.start do
+    command_name 'spec'
+    add_filter 'spec'
+  end
+end
 require 'bundler/setup'
 require 'coinpare'
 require 'open3'
