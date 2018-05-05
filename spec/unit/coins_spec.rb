@@ -2,7 +2,7 @@ require 'coinpare/commands/coins'
 
 RSpec.describe Coinpare::Commands::Coins, 'coins command' do
   before(:each) do
-    time = Time.local(2018, 4, 1, 12, 30, 54)
+    time = Time.utc(2018, 4, 1, 12, 30, 54)
     Timecop.freeze(time)
     allow(TTY::Screen).to receive(:width).and_return(200)
   end
@@ -28,7 +28,7 @@ RSpec.describe Coinpare::Commands::Coins, 'coins command' do
 
     expected_output = <<-OUT
 
-Exchange CCCAGG  Currency USD  Time 01 April 2018 at 12:30:54 PM BST
+Exchange CCCAGG  Currency USD  Time 01 April 2018 at 12:30:54 PM UTC
 
 ┌──────┬──────────┬───────────┬───────────┬──────────┬──────────┬──────────┬─────────────────┬────────────────┬──────────────┐
 │ Coin │    Price │  Chg. 24H │ Chg.% 24H │ Open 24H │ High 24H │  Low 24H │ Direct Vol. 24H │ Total Vol. 24H │   Market Cap │
@@ -59,7 +59,7 @@ Exchange CCCAGG  Currency USD  Time 01 April 2018 at 12:30:54 PM BST
 
     expected_output = <<-OUT
 
-Exchange CCCAGG  Currency GBP  Time 01 April 2018 at 12:30:54 PM BST
+Exchange CCCAGG  Currency GBP  Time 01 April 2018 at 12:30:54 PM UTC
 
 ┌──────┬────────────┬───────────┬───────────┬────────────┬────────────┬────────────┬─────────────────┬────────────────┬────────────┐
 │ Coin │      Price │  Chg. 24H │ Chg.% 24H │   Open 24H │   High 24H │    Low 24H │ Direct Vol. 24H │ Total Vol. 24H │ Market Cap │
@@ -90,7 +90,7 @@ Exchange CCCAGG  Currency GBP  Time 01 April 2018 at 12:30:54 PM BST
 
     expected_output = <<-OUT
 
-Exchange coinbase  Currency USD  Time 01 April 2018 at 12:30:54 PM BST
+Exchange coinbase  Currency USD  Time 01 April 2018 at 12:30:54 PM UTC
 
 ┌──────┬────────────┬────────────┬───────────┬────────────┬────────────┬────────────┬─────────────────┬────────────────┬──────────────┐
 │ Coin │      Price │   Chg. 24H │ Chg.% 24H │   Open 24H │   High 24H │    Low 24H │ Direct Vol. 24H │ Total Vol. 24H │   Market Cap │
@@ -127,7 +127,7 @@ Exchange coinbase  Currency USD  Time 01 April 2018 at 12:30:54 PM BST
 
     expected_output = <<-OUT
 
-Exchange CCCAGG  Currency USD  Time 01 April 2018 at 12:30:54 PM BST
+Exchange CCCAGG  Currency USD  Time 01 April 2018 at 12:30:54 PM UTC
 
 ┌──────┬────────────┬─────────────┬───────────┬────────────┬────────────┬────────────┬─────────────────┬────────────────┬──────────────┐
 │ Coin │      Price │    Chg. 24H │ Chg.% 24H │   Open 24H │   High 24H │    Low 24H │ Direct Vol. 24H │ Total Vol. 24H │   Market Cap │

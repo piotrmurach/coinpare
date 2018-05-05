@@ -2,7 +2,7 @@ require 'coinpare/commands/holdings'
 
 RSpec.describe Coinpare::Commands::Holdings, type: :cli do
   before(:each) do
-    time = Time.local(2018, 4, 1, 12, 30, 54)
+    time = Time.utc(2018, 4, 1, 12, 30, 54)
     Timecop.freeze(time)
     allow(TTY::Screen).to receive(:width).and_return(200)
   end
@@ -49,7 +49,7 @@ Let's change that and setup your altfolio!
 [c] Do you want to add coin to your altfolio? (Y/n) \e[2K\e[1G[c] Do you want to add coin to your altfolio? (Y/n) n\e[2K\e[1G[c] Do you want to add coin to your altfolio? (Y/n) n
 \e[1A\e[2K\e[1G[c] Do you want to add coin to your altfolio? no
 
-Exchange CCCAGG  Currency USD  Time 01 April 2018 at 12:30:54 PM BST
+Exchange CCCAGG  Currency USD  Time 01 April 2018 at 12:30:54 PM UTC
 
 ┌──────┬────────┬───────────┬─────────────────┬───────────┬─────────────┬──────────────┬───────────┐
 │ Coin │ Amount │ Buy Price │ Total Buy Price │     Price │ Total Price │       Change │   Change% │
@@ -84,7 +84,7 @@ Exchange CCCAGG  Currency USD  Time 01 April 2018 at 12:30:54 PM BST
 
     expected_output = <<-OUT
 
-Exchange CCCAGG  Currency USD  Time 01 April 2018 at 12:30:54 PM BST
+Exchange CCCAGG  Currency USD  Time 01 April 2018 at 12:30:54 PM UTC
 
 ┌──────┬────────┬───────────┬─────────────────┬───────────┬─────────────┬────────────┬─────────────┐
 │ Coin │ Amount │ Buy Price │ Total Buy Price │     Price │ Total Price │     Change │     Change% │
