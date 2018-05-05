@@ -30,7 +30,7 @@ module Coinpare
     # @api public
     def banner(settings)
       "\n#{add_color('Exchange', :yellow)} #{settings['exchange']}  " \
-      "#{add_color('Currency', :yellow)} #{settings['base']}  " \
+      "#{add_color('Currency', :yellow)} #{settings['base'].upcase}  " \
       "#{add_color('Time', :yellow)} #{timestamp}\n\n"
     end
 
