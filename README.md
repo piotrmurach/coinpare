@@ -4,7 +4,7 @@
 [![Build Status](https://secure.travis-ci.org/piotrmurach/coinpare.svg?branch=master)][travis]
 [![Build status](https://ci.appveyor.com/api/projects/status/dsd3cone86it12pi?svg=true)][appveyor]
 [![Maintainability](https://api.codeclimate.com/v1/badges/1072406ba7e951e355e4/maintainability)][codeclimate]
-[![Coverage Status](https://coveralls.io/repos/github/piotrmurach/coinpare/badge.svg)][coverage]
+[![Test Coverage](https://api.codeclimate.com/v1/badges/1072406ba7e951e355e4/test_coverage)][coverage]
 [![Inline docs](http://inch-ci.org/github/piotrmurach/coinpare.svg?branch=master)][inchpages]
 
 [gitter]: https://gitter.im/piotrmurach/coinpare
@@ -12,7 +12,7 @@
 [travis]: http://travis-ci.org/piotrmurach/coinpare
 [appveyor]: https://ci.appveyor.com/project/piotrmurach/coinpare
 [codeclimate]: https://codeclimate.com/github/piotrmurach/coinpare/maintainability
-[coverage]: https://coveralls.io/github/piotrmurach/coinpare
+[coverage]: https://codeclimate.com/github/piotrmurach/coinpare/test_coverage
 [inchpages]: http://inch-ci.org/github/piotrmurach/coinpare
 
 > Compare cryptocurrency trading data across multiple exchanges and blockchains in the comfort of your terminal window.
