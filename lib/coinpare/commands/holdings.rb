@@ -50,7 +50,8 @@ module Coinpare
         settings = config.fetch('settings')
         # command options take precedence over config settings
         overridden_settings = settings.merge(@options)
-        names = config.fetch('holdings').map { |c| c['name'] }
+        holdings = config.fetch('holdings') { [] }
+        names = holdings.map { |c| c['name'] }
 
         @spinner.auto_spin
         response = Fetcher.fetch_prices(names.join(','),
