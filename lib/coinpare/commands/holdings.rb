@@ -62,9 +62,7 @@ module Coinpare
 
         @spinner.stop
 
-        output.puts "\n" + add_color('Exchange', :yellow) +
-                    " #{overridden_settings['exchange']}  " +
-                    add_color('Time', :yellow) + " #{timestamp}\n\n"
+        output.puts banner(overridden_settings)
         output.puts table.render(:unicode, padding: [0, 1], alignment: :right)
       ensure
         @spinner.stop

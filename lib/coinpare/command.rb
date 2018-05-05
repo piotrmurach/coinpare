@@ -23,7 +23,15 @@ module Coinpare
     # Time for when the data was fetched
     # @api public
     def timestamp
-      "#{Time.now.strftime("%d %B %Y")} at #{Time.now.strftime("%I:%M:%S %p")}"
+      "#{Time.now.strftime("%d %B %Y")} at #{Time.now.strftime("%I:%M:%S %p %Z")}"
+    end
+
+    # The exchange, currency & time banner
+    # @api public
+    def banner(settings)
+      "\n#{add_color('Exchange', :yellow)} #{settings['exchange']}  " \
+      "#{add_color('Currency', :yellow)} #{settings['base']}  " \
+      "#{add_color('Time', :yellow)} #{timestamp}\n\n"
     end
 
     # Provide arrow for marking value growth or decline

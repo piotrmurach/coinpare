@@ -49,7 +49,7 @@ Let's change that and setup your altfolio!
 [c] Do you want to add coin to your altfolio? (Y/n) \e[2K\e[1G[c] Do you want to add coin to your altfolio? (Y/n) n\e[2K\e[1G[c] Do you want to add coin to your altfolio? (Y/n) n
 \e[1A\e[2K\e[1G[c] Do you want to add coin to your altfolio? no
 
-Exchange CCCAGG  Time 01 April 2018 at 12:30:54 PM
+Exchange CCCAGG  Currency USD  Time 01 April 2018 at 12:30:54 PM BST
 
 ┌──────┬───────────┬───────────┬──────────────┬───────────┐
 │ Coin │ Buy Price │     Price │       Change │   Change% │
@@ -84,7 +84,7 @@ Exchange CCCAGG  Time 01 April 2018 at 12:30:54 PM
 
     expected_output = <<-OUT
 
-Exchange CCCAGG  Time 01 April 2018 at 12:30:54 PM
+Exchange CCCAGG  Currency USD  Time 01 April 2018 at 12:30:54 PM BST
 
 ┌──────┬───────────┬───────────┬────────────┬─────────────┐
 │ Coin │ Buy Price │     Price │     Change │     Change% │
@@ -103,6 +103,7 @@ Exchange CCCAGG  Time 01 April 2018 at 12:30:54 PM
     options = {"edit" => true, "no-color" => true}
 
     command = Coinpare::Commands::Holdings.new(options)
+    command.config.location_paths.clear
 
     command.execute(output: output)
 

@@ -28,7 +28,7 @@ RSpec.describe Coinpare::Commands::Coins, 'coins command' do
 
     expected_output = <<-OUT
 
-Exchange CCCAGG  Time 01 April 2018 at 12:30:54 PM
+Exchange CCCAGG  Currency USD  Time 01 April 2018 at 12:30:54 PM BST
 
 ┌──────┬──────────┬───────────┬───────────┬──────────┬──────────┬──────────┬─────────────────┬────────────────┬──────────────┐
 │ Coin │    Price │  Chg. 24H │ Chg.% 24H │ Open 24H │ High 24H │  Low 24H │ Direct Vol. 24H │ Total Vol. 24H │   Market Cap │
@@ -59,7 +59,7 @@ Exchange CCCAGG  Time 01 April 2018 at 12:30:54 PM
 
     expected_output = <<-OUT
 
-Exchange CCCAGG  Time 01 April 2018 at 12:30:54 PM
+Exchange CCCAGG  Currency GBP  Time 01 April 2018 at 12:30:54 PM BST
 
 ┌──────┬────────────┬───────────┬───────────┬────────────┬────────────┬────────────┬─────────────────┬────────────────┬────────────┐
 │ Coin │      Price │  Chg. 24H │ Chg.% 24H │   Open 24H │   High 24H │    Low 24H │ Direct Vol. 24H │ Total Vol. 24H │ Market Cap │
@@ -90,7 +90,7 @@ Exchange CCCAGG  Time 01 April 2018 at 12:30:54 PM
 
     expected_output = <<-OUT
 
-Exchange coinbase  Time 01 April 2018 at 12:30:54 PM
+Exchange coinbase  Currency USD  Time 01 April 2018 at 12:30:54 PM BST
 
 ┌──────┬────────────┬────────────┬───────────┬────────────┬────────────┬────────────┬─────────────────┬────────────────┬──────────────┐
 │ Coin │      Price │   Chg. 24H │ Chg.% 24H │   Open 24H │   High 24H │    Low 24H │ Direct Vol. 24H │ Total Vol. 24H │   Market Cap │
@@ -127,7 +127,7 @@ Exchange coinbase  Time 01 April 2018 at 12:30:54 PM
 
     expected_output = <<-OUT
 
-Exchange CCCAGG  Time 01 April 2018 at 12:30:54 PM
+Exchange CCCAGG  Currency USD  Time 01 April 2018 at 12:30:54 PM BST
 
 ┌──────┬────────────┬─────────────┬───────────┬────────────┬────────────┬────────────┬─────────────────┬────────────────┬──────────────┐
 │ Coin │      Price │    Chg. 24H │ Chg.% 24H │   Open 24H │   High 24H │    Low 24H │ Direct Vol. 24H │ Total Vol. 24H │   Market Cap │

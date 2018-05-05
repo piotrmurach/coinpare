@@ -36,9 +36,7 @@ module Coinpare
 
         @spinner.stop
 
-        output.print "\n" + add_color('Exchange', :yellow) +
-                    " #{@options['exchange']}  " +
-                    add_color('Time', :yellow) + " #{timestamp}\n\n"
+        output.puts banner(@options)
         @pager.page(table.render(:unicode, padding: [0, 1], alignment: :right))
         output.puts
       ensure
