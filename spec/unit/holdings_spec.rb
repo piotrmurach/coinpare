@@ -102,7 +102,7 @@ Exchange CCCAGG  Currency USD  Time 01 April 2018 at 12:30:54 PM UTC
 
   it "displays advice when no portfolio configuration can be edited" do
     output = StringIO.new
-    options = {"edit" => true, "no-color" => true}
+    options = {"edit" => true, "base"=>"USD", "exchange"=>"CCCAGG", "no-color"=>true}
 
     command = Coinpare::Commands::Holdings.new(options)
     command.config.location_paths.clear
