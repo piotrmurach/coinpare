@@ -135,7 +135,7 @@ module Coinpare
           past_price = coin['amount'] * coin['price']
           curr_price = coin['amount'] * coin_data['PRICE']
           to_symbol = coin_display_data['TOSYMBOL']
-          growing = percent_change(coin['price'], curr_price) > 0
+          growing = (curr_price - past_price) > 0
           arrow = pick_arrow(growing)
           total_buy +=  past_price
           total += curr_price
