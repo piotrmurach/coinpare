@@ -46,10 +46,19 @@ module Coinpare
         elsif @options['add']
           coin_info = add_coin(input, output)
           config.append(coin_info, to: ['holdings'])
+        elsif @options['remove']
+          coin_info = remove_coin(input, output)
+          config.remove(*coin_info, from: ['holdings'])
+        end
+
+        no_holdings_left = config.fetch('holdings') && config.fetch('holdings').empty?
+        if no_holdings_left
+          config.delete('holdings')
         end
 
         # Persist current configuration
         config.write(force: true)
+        return if no_holdings_left
 
         settings = config.fetch('settings')
         # command options take precedence over config settings
@@ -73,11 +82,13 @@ module Coinpare
       end
 
       def create_prompt(input, output)
-        TTY::Prompt.new(
+        prompt = TTY::Prompt.new(
           prefix: "[#{add_color('c', :yellow)}] ",
           input: input, output: output,
           interrupt: -> { puts; exit 1 },
           enable_color: !@options['no-color'], clear: true)
+        prompt.on(:keypress) { |e| prompt.trigger(:keydown) if e.value == 'j' }
+        prompt
       end
 
       def ask_coin
@@ -103,6 +114,16 @@ module Coinpare
         prompt = create_prompt(input, output)
         context = self
         prompt.collect(&context.ask_coin)
+      end
+
+      def remove_coin(input, output)
+        prompt = create_prompt(input, output)
+        holdings = config.fetch('holdings')
+        prompt.multi_select('Which hodlings to remove?') do |menu|
+          holdings.each do |holding|
+            menu.choice "#{holding['name']} (#{holding['amount']})", holding
+          end
+        end
       end
 
       def setup_portfolio(input, output)

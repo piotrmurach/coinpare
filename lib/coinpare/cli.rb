@@ -88,6 +88,8 @@ module Coinpare
                              banner: 'name'
     method_option :help, aliases: '-h', type: :boolean,
                          desc: 'Display usage information'
+    method_option :remove, type: :boolean,
+                  desc: "Remove the given coin(s) from holdings"
     method_option :reset, type: :boolean, default: false,
                           desc: 'Remove all coins from your existing holdings'
     def holdings(*)

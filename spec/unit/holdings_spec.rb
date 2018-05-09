@@ -155,6 +155,83 @@ Exchange CCCAGG  Currency USD  Time 01 April 2018 at 12:30:54 PM UTC
     expect(output.string).to eq(expected_output)
   end
 
+  it "removes holdings" do
+    input = StringIO.new
+    output = StringIO.new
+    options = {"base"=>"USD", "exchange"=>"CCCAGG", "no-color"=>true, "remove" => true}
+    prices_path = fixtures_path('pricemultifull_top10.json')
+    config_path = fixtures_path('coinpare.toml')
+
+    ::FileUtils.cp(config_path, tmp_path)
+
+    stub_request(:get, "https://min-api.cryptocompare.com/data/pricemultifull")
+      .with(query: {"fsyms" => "BTC",
+                    "tsyms" => "USD",
+                    "e" => "CCCAGG",
+                    "tryConversion" => "true"})
+      .to_return(body: File.new(prices_path), status: 200)
+
+    input << "j" << " " << "j" << " " << "\r"
+    input.rewind
+
+    command = Coinpare::Commands::Holdings.new(options)
+
+    command.config.location_paths.clear
+    command.config.prepend_path(tmp_path)
+
+    command.execute(input: input, output: output)
+
+    config = TTY::Config.new
+    config.read(tmp_path('coinpare.toml'))
+
+    expect(config.fetch(:holdings)).to eq([{"amount"=>1.25, "name" => "BTC", "price" => 8000.0}])
+
+    expected_output = <<-OUT
+Exchange CCCAGG  Currency USD  Time 01 April 2018 at 12:30:54 PM UTC
+
+┌──────┬────────┬──────────┬─────────────┬────────────┬──────────────────┬──────────────┬───────────┐
+│ Coin │ Amount │    Price │ Total Price │ Cur. Price │ Total Cur. Price │       Change │   Change% │
+├──────┼────────┼──────────┼─────────────┼────────────┼──────────────────┼──────────────┼───────────┤
+│ BTC  │   1.25 │ $ 8000.0 │   $ 10000.0 │  $ 7002.45 │        $ 8753.06 │ ▾ $ -1246.94 │ ▾ -12.47% │
+│ ALL  │      - │        - │   $ 10000.0 │          - │        $ 8753.06 │ ▾ $ -1246.94 │ ▾ -12.47% │
+└──────┴────────┴──────────┴─────────────┴────────────┴──────────────────┴──────────────┴───────────┘
+    OUT
+
+    expect(output.string).to include(expected_output)
+  end
+
+  it "removes all holdings" do
+    input = StringIO.new
+    output = StringIO.new
+    options = {"base"=>"USD", "exchange"=>"CCCAGG", "no-color"=>true, "remove" => true}
+    prices_path = fixtures_path('pricemultifull_top10.json')
+    config_path = fixtures_path('coinpare.toml')
+
+    ::FileUtils.cp(config_path, tmp_path)
+
+    stub_request(:get, "https://min-api.cryptocompare.com/data/pricemultifull")
+      .with(query: {"fsyms" => "BTC",
+                    "tsyms" => "USD",
+                    "e" => "CCCAGG",
+                    "tryConversion" => "true"})
+      .to_return(body: File.new(prices_path), status: 200)
+
+    input <<  " " << "j" << " " << "j" << " " <<  "\r"
+    input.rewind
+
+    command = Coinpare::Commands::Holdings.new(options)
+
+    command.config.location_paths.clear
+    command.config.prepend_path(tmp_path)
+
+    command.execute(input: input, output: output)
+
+    config = TTY::Config.new
+    config.read(tmp_path('coinpare.toml'))
+
+    expect(config.fetch(:holdings)).to eq(nil)
+  end
+
   it "displays advice when no portfolio configuration can be edited" do
     output = StringIO.new
     options = {"edit" => true, "base"=>"USD", "exchange"=>"CCCAGG", "no-color"=>true}
