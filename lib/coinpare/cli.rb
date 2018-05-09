@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 require 'thor'
+require 'pastel'
+require 'tty-font'
 
 module Coinpare
   # Handle the application command line parsing
@@ -10,6 +12,13 @@ module Coinpare
   class CLI < Thor
     # Error raised by this runner
     Error = Class.new(StandardError)
+
+    def self.help(*args)
+      font =  TTY::Font.new(:standard)
+      pastel = Pastel.new
+      puts pastel.yellow(font.write("Coinpare"))
+      super
+    end
 
     class_option :"no-color", type: :boolean, default: false,
                               desc: 'Disable colorization in output'
