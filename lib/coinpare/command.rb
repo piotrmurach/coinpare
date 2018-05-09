@@ -82,16 +82,6 @@ module Coinpare
       TTY::Editor
     end
 
-    # File manipulation utility methods
-    #
-    # @see http://www.rubydoc.info/gems/tty-file
-    #
-    # @api public
-    def generator
-      require 'tty-file'
-      TTY::File
-    end
-
     # Get terminal screen properties
     #
     # @see http://www.rubydoc.info/gems/tty-screen
@@ -100,26 +90,6 @@ module Coinpare
     def screen
       require 'tty-screen'
       TTY::Screen
-    end
-
-    # The unix which utility
-    #
-    # @see http://www.rubydoc.info/gems/tty-which
-    #
-    # @api public
-    def which(*args)
-      require 'tty-which'
-      TTY::Which.which(*args)
-    end
-
-    # Check if executable exists
-    #
-    # @see http://www.rubydoc.info/gems/tty-which
-    #
-    # @api public
-    def exec_exist?(*args)
-      require 'tty-which'
-      TTY::Which.exist?(*args)
     end
   end # Command
 end # Coinpare
