@@ -20,7 +20,7 @@ RSpec.describe Coinpare::Commands::Holdings, type: :cli do
                     "tryConversion" => "true"})
       .to_return(body: File.new(prices_path), status: 200)
 
-    input << "\n\nY\nbtc\n1\n11500\nn\n"# Y\neth\n4\n600\nn\n"
+    input << "\n\nY\nbtc\n1\n11500\nn\n"
     input.rewind
 
     command = Coinpare::Commands::Holdings.new(options)
@@ -94,6 +94,61 @@ Exchange CCCAGG  Currency USD  Time 01 April 2018 at 12:30:54 PM UTC
 │ ETH  │    4.0 │  $ 600.0 │    $ 2400.0 │   $ 381.86 │        $ 1527.44 │  ▾ $ -872.56 │ ▾ -36.36% │
 │ TRX  │ 2000.0 │   $ 0.02 │      $ 40.0 │     $ 0.03 │          $ 68.44 │    ▲ $ 28.44 │   ▲ 71.1% │
 │ ALL  │      - │        - │   $ 12440.0 │          - │       $ 10348.94 │ ▾ $ -2091.06 │ ▾ -16.81% │
+└──────┴────────┴──────────┴─────────────┴────────────┴──────────────────┴──────────────┴───────────┘
+    OUT
+
+    expect(output.string).to eq(expected_output)
+  end
+
+  it "adds a new holding" do
+    input = StringIO.new
+    output = StringIO.new
+    options = {"base"=>"USD", "exchange"=>"CCCAGG", "no-color"=>true, "add" => true}
+    prices_path = fixtures_path('pricemultifull_top10.json')
+    config_path = fixtures_path('coinpare.toml')
+
+    ::FileUtils.cp(config_path, tmp_path)
+
+    stub_request(:get, "https://min-api.cryptocompare.com/data/pricemultifull")
+      .with(query: {"fsyms" => "BTC,ETH,TRX,LTC",
+                    "tsyms" => "USD",
+                    "e" => "CCCAGG",
+                    "tryConversion" => "true"})
+      .to_return(body: File.new(prices_path), status: 200)
+
+    input << "LTC\n4\n120\n"
+    input.rewind
+
+    command = Coinpare::Commands::Holdings.new(options)
+
+    command.config.location_paths.clear
+    command.config.prepend_path(tmp_path)
+
+    command.execute(input: input, output: output)
+
+    config = TTY::Config.new
+    config.read(tmp_path('coinpare.toml'))
+
+    expect(config.fetch(:holdings)).to include({"amount"=>4.0, "name" => "LTC", "price" => 120.0})
+
+    expected_output = <<-OUT
+[c] What coin do you own? (BTC) \e[2K\e[1G[c] What coin do you own? (BTC) L\e[2K\e[1G[c] What coin do you own? (BTC) LT\e[2K\e[1G[c] What coin do you own? (BTC) LTC\e[2K\e[1G[c] What coin do you own? (BTC) LTC
+\e[1A\e[2K\e[1G[c] What coin do you own? LTC
+[c] What amount? \e[2K\e[1G[c] What amount? 4\e[2K\e[1G[c] What amount? 4
+\e[1A\e[2K\e[1G[c] What amount? 4
+[c] At what price per coin? \e[2K\e[1G[c] At what price per coin? 1\e[2K\e[1G[c] At what price per coin? 12\e[2K\e[1G[c] At what price per coin? 120\e[2K\e[1G[c] At what price per coin? 120
+\e[1A\e[2K\e[1G[c] At what price per coin? 120
+
+Exchange CCCAGG  Currency USD  Time 01 April 2018 at 12:30:54 PM UTC
+
+┌──────┬────────┬──────────┬─────────────┬────────────┬──────────────────┬──────────────┬───────────┐
+│ Coin │ Amount │    Price │ Total Price │ Cur. Price │ Total Cur. Price │       Change │   Change% │
+├──────┼────────┼──────────┼─────────────┼────────────┼──────────────────┼──────────────┼───────────┤
+│ BTC  │   1.25 │ $ 8000.0 │   $ 10000.0 │  $ 7002.45 │        $ 8753.06 │ ▾ $ -1246.94 │ ▾ -12.47% │
+│ ETH  │    4.0 │  $ 600.0 │    $ 2400.0 │   $ 381.86 │        $ 1527.44 │  ▾ $ -872.56 │ ▾ -36.36% │
+│ TRX  │ 2000.0 │   $ 0.02 │      $ 40.0 │     $ 0.03 │          $ 68.44 │    ▲ $ 28.44 │   ▲ 71.1% │
+│ LTC  │    4.0 │  $ 120.0 │     $ 480.0 │    $ 118.1 │          $ 472.4 │     ▾ $ -7.6 │  ▾ -1.58% │
+│ ALL  │      - │        - │   $ 12920.0 │          - │       $ 10821.34 │ ▾ $ -2098.66 │ ▾ -16.24% │
 └──────┴────────┴──────────┴─────────────┴────────────┴──────────────────┴──────────────┴───────────┘
     OUT
 

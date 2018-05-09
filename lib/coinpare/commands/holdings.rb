@@ -43,7 +43,11 @@ module Coinpare
         if holdings.nil? || (holdings && holdings.empty?)
           info = setup_portfolio(input, output)
           config.merge(info)
+        elsif @options['add']
+          coin_info = add_coin(input, output)
+          config.append(coin_info, to: ['holdings'])
         end
+
         # Persist current configuration
         config.write(force: true)
 
@@ -68,24 +72,55 @@ module Coinpare
         @spinner.stop
       end
 
-      private
+      def create_prompt(input, output)
+        TTY::Prompt.new(
+          prefix: "[#{add_color('c', :yellow)}] ",
+          input: input, output: output,
+          interrupt: -> { puts; exit 1 },
+          enable_color: !@options['no-color'], clear: true)
+      end
+
+      def ask_coin
+        -> (prompt) do
+          key('name').ask('What coin do you own?') do |q|
+            q.default 'BTC'
+            q.convert ->(coin) { coin.upcase }
+          end
+          key('amount').ask('What amount?') do |q|
+            q.required true
+            q.validate(/[\d.]+/, 'Invalid amount provided')
+            q.convert ->(am) { am.to_f }
+          end
+          key('price').ask('At what price per coin?') do |q|
+            q.required true
+            q.validate(/[\d.]+/, 'Invalid prince provided')
+            q.convert ->(p) { p.to_f }
+          end
+        end
+      end
+
+      def add_coin(input, output)
+        prompt = create_prompt(input, output)
+        context = self
+        prompt.collect(&context.ask_coin)
+      end
 
       def setup_portfolio(input, output)
         output.puts "Currently you have no investments setup"
         output.puts "Let's change that and setup your altfolio!"
         output.puts
 
-        prompt = TTY::Prompt.new(prefix: "[#{add_color('c', :yellow)}] ",
-                                 input: input, output: output,
-                                 interrupt: -> { puts; exit 1 },
-                                 enable_color: !@options['no-color'])
+        prompt = create_prompt(input, output)
+        context = self
         base = @options['base']
         exchange = @options['exchange']
+
         prompt.collect do
           key('settings') do
             key('base').ask('What base currency to convert holdings to?') do |q|
               q.default base
               q.convert ->(b) { b.upcase }
+              q.validate(/\w{3}/, 'Currency code needs to be 3 chars long')
             end
             key('exchange').ask('What exchange would you like to use?') do |q|
               q.default exchange
@@ -93,22 +128,7 @@ module Coinpare
           end
 
           while prompt.yes?("Do you want to add coin to your altfolio?")
-            key('holdings').values do
-              key('name').ask('What coin do you own?') do |q|
-                q.default 'BTC'
-                q.convert ->(coin) { coin.upcase }
-              end
-              key('amount').ask('What amount?') do |q|
-                q.required true
-                q.validate(/[\d.]+/, 'Invalid amount provided')
-                q.convert ->(am) { am.to_f }
-              end
-              key('price').ask('At what price per coin?') do |q|
-                q.required true
-                q.validate(/[\d.]+/, 'Invalid prince provided')
-                q.convert ->(p) { p.to_f }
-              end
-            end
+            key('holdings').values(&context.ask_coin)
           end
         end
       end
