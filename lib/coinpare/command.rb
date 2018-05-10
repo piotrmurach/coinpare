@@ -48,8 +48,26 @@ module Coinpare
       growing ? :green : :red
     end
 
+    def percent(value)
+      (value * 100).round(2)
+    end
+
     def percent_change(before, after)
       (after - before) / before.to_f * 100
+    end
+
+    def shorten_currency(value)
+      if value > 10 ** 9
+         (value / 10 ** 9).to_f.round(2).to_s + ' B'
+      elsif value > 10 ** 6
+        (value / 10 ** 6).to_f.round(2).to_s + ' M'
+      else
+        value
+      end
+    end
+
+    def number_to_currency(value)
+      value.to_s.gsub(/(\d)(?=(\d\d\d)+(?!\d))/, '\\1,')
     end
 
     # Execute this command
