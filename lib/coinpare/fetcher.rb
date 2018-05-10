@@ -49,5 +49,14 @@ module Coinpare
       fetch_json(url.join)
     end
     module_function :fetch_prices
+
+    def fetch_top_exchanges_by_pair(from_symbol, to_symbol, options)
+      url = ["#{API_URL}top/exchanges/full"]
+      url << "?fsym=#{from_symbol}&tsym=#{to_symbol}"
+      url << "&limit=#{options['top']}&page=0" if options['top']
+
+      fetch_json(url.join)
+    end
+    module_function :fetch_top_exchanges_by_pair
   end
 end
