@@ -59,7 +59,10 @@ module Coinpare
 
         # Persist current configuration
         config.write(force: true)
-        return if no_holdings_left
+        if no_holdings_left
+          output.puts add_color("Please add holdings to your altfolio!", :green)
+          return
+        end
 
         settings = config.fetch('settings')
         # command options take precedence over config settings
