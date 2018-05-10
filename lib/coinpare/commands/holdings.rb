@@ -51,7 +51,8 @@ module Coinpare
           config.remove(*coin_info, from: ['holdings'])
         end
 
-        no_holdings_left = config.fetch('holdings') && config.fetch('holdings').empty?
+        holdings = config.fetch('holdings')
+        no_holdings_left = holdings.nil? || (holdings && holdings.empty?)
         if no_holdings_left
           config.delete('holdings')
         end
