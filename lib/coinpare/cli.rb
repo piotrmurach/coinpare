@@ -101,6 +101,36 @@ module Coinpare
       end
     end
 
+    desc 'markets [NAME]', 'Get top markets by volume for a currency pair'
+    long_desc <<-DESC
+      Get top markets by volume for a currency pair.
+
+      By default 10 top markets by their total volume across all markets in
+      the last 24 hours.
+
+      Example:
+
+      > $ coinpare markets BTC --base USD
+    DESC
+    method_option :base, aliases: '-b', type: :string, default: "USD",
+                         desc: 'The currency symbol to convert into',
+                         banner: 'currency'
+    method_option :columns, aliases: '-c', type: :array,
+                            desc: 'Specify columns to display',
+                            banner: '0 1 2'
+    method_option :help, aliases: '-h', type: :boolean,
+                         desc: 'Display usage information'
+    method_option :top, aliases: '-t', type: :numeric, default: 10,
+                        desc: "The number of top exchanges by total volume in 24 hours"
+    def markets(name = 'BTC')
+      if options[:help]
+        invoke :help, ['markets']
+      else
+        require_relative 'commands/markets'
+        Coinpare::Commands::Markets.new(name, options).execute
+      end
+    end
+
     desc 'version', 'coinpare version'
     def version
       require_relative 'version'
