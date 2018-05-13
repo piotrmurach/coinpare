@@ -49,7 +49,44 @@ Coin BTC  Base Currency USD  Time 01 April 2018 at 12:30:54 PM UTC
     expect(output.string).to eq(expected_output)
   end
 
-  it "prints base currency symbols"
+  it "prints base currency symbols" do
+    output = StringIO.new
+    prices_path = fixtures_path('pricemultifull_btc_ltc.json')
+    exchanges_path = fixtures_path('exchangesfull_ltc_base.json')
+    options = {"base"=>"LTC", "no-color"=>true}
+
+    stub_request(:get, "https://min-api.cryptocompare.com/data/pricemultifull")
+      .with(query: {"fsyms" => "BTC",
+                    "tsyms" => "LTC",
+                    "tryConversion" => "true"})
+      .to_return(body: File.new(prices_path), status: 200)
+
+
+    stub_request(:get, "https://min-api.cryptocompare.com/data/top/exchanges/full")
+      .with(query: {"fsym" => "BTC", "tsym" => "LTC"})
+      .to_return(body: File.new(exchanges_path), status: 200)
+
+    command = Coinpare::Commands::Markets.new('BTC', options)
+
+    command.execute(output: output)
+
+    expected_output = <<-OUT
+
+Coin BTC  Base Currency LTC  Time 01 April 2018 at 12:30:54 PM UTC
+
+┌───────────────┬──────────┬───────────┬───────────┬──────────┬──────────┬──────────┬─────────────────┐
+│ Market        │    Price │  Chg. 24H │ Chg.% 24H │ Open 24H │ High 24H │  Low 24H │ Direct Vol. 24H │
+├───────────────┼──────────┼───────────┼───────────┼──────────┼──────────┼──────────┼─────────────────┤
+│ LocalBitcoins │  Ł 61.23 │ ▾ Ł -0.16 │ ▾ -26.06% │  Ł 61.39 │  Ł 61.39 │  Ł 61.23 │          Ł 0.68 │
+│ OKCoin        │  Ł 18.46 │   ▾ Ł 0.0 │      ▾ 0% │  Ł 18.46 │  Ł 18.46 │  Ł 18.46 │           Ł 0.0 │
+│ Kraken        │ Ł 0.0041 │   ▾ Ł 0.0 │      ▾ 0% │ Ł 0.0041 │ Ł 0.0041 │ Ł 0.0041 │           Ł 0.0 │
+│ CCEX          │ Ł 155.87 │   ▾ Ł 0.0 │      ▾ 0% │ Ł 155.87 │ Ł 155.87 │ Ł 155.87 │           Ł 0.0 │
+│ BitSquare     │   Ł 49.0 │   ▾ Ł 0.0 │      ▾ 0% │   Ł 49.0 │   Ł 49.0 │   Ł 49.0 │           Ł 0.0 │
+└───────────────┴──────────┴───────────┴───────────┴──────────┴──────────┴──────────┴─────────────────┘
+    OUT
+
+    expect(output.string).to eq(expected_output)
+  end
 
   it "prints small precision currencies" do
     output = StringIO.new
