@@ -43,9 +43,10 @@ $ coinpare
 
 ## Features
 
-* Compare chosen or top coins by trading volume data
-* Compare valuations for your chosen holdings
+* Compare chosen or top coins by trading volume
+* Compare top markets by a trading coin pair
 * Create your custom portfolio
+* Compare valuations for your chosen holdings
 
 ## Usage
 
