@@ -74,7 +74,7 @@ module Coinpare
 
     def round_to(value, prec = nil)
       prec = precision(value) if prec.nil?
-      (value * 10**prec).round.to_f / 10**prec
+      "%.#{prec}f" % value
     end
 
     def number_to_currency(value)
