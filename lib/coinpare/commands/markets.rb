@@ -63,13 +63,13 @@ module Coinpare
           growing = market['CHANGE24HOUR'] > 0
           market_details = [
             { value: add_color(market['MARKET'], :yellow), alignment: :left },
-            "#{to_symbol} #{number_to_currency(market['PRICE'].round(2))}",
-            add_color("#{pick_arrow(growing)} #{to_symbol} #{number_to_currency(market['CHANGE24HOUR'].round(2))}", pick_color(growing)),
+            "#{to_symbol} #{number_to_currency(round_to(market['PRICE']))}",
+            add_color("#{pick_arrow(growing)} #{to_symbol} #{number_to_currency(round_to(market['CHANGE24HOUR']))}", pick_color(growing)),
             add_color("#{pick_arrow(growing)} #{percent(market['CHANGEPCT24HOUR'])}%", pick_color(growing)),
-            "#{to_symbol} #{number_to_currency(market['OPEN24HOUR'].round(2))}",
-            "#{to_symbol} #{number_to_currency(market['HIGH24HOUR'].round(2))}",
-            "#{to_symbol} #{number_to_currency(market['LOW24HOUR'].round(2))}",
-            "#{to_symbol} #{number_to_currency(market['VOLUME24HOURTO'].round(2))}"
+            "#{to_symbol} #{number_to_currency(round_to(market['OPEN24HOUR']))}",
+            "#{to_symbol} #{number_to_currency(round_to(market['HIGH24HOUR']))}",
+            "#{to_symbol} #{number_to_currency(round_to(market['LOW24HOUR']))}",
+            "#{to_symbol} #{number_to_currency(round_to(market['VOLUME24HOURTO']))}"
           ]
           table << market_details
         end

@@ -48,4 +48,44 @@ Coin BTC  Base Currency USD  Time 01 April 2018 at 12:30:54 PM UTC
 
     expect(output.string).to eq(expected_output)
   end
+
+  it "prints base currency symbols"
+
+  it "prints small precision currencies" do
+    output = StringIO.new
+    prices_path = fixtures_path('pricemultifull_top10.json')
+    exchanges_path = fixtures_path('exchangesfull_trx.json')
+    options = {"base"=>"USD", "no-color"=>true}
+
+    stub_request(:get, "https://min-api.cryptocompare.com/data/pricemultifull")
+      .with(query: {"fsyms" => "TRX",
+                    "tsyms" => "USD",
+                    "tryConversion" => "true"})
+      .to_return(body: File.new(prices_path), status: 200)
+
+
+    stub_request(:get, "https://min-api.cryptocompare.com/data/top/exchanges/full")
+      .with(query: {"fsym" => "TRX", "tsym" => "USD"})
+      .to_return(body: File.new(exchanges_path), status: 200)
+
+    command = Coinpare::Commands::Markets.new('TRX', options)
+
+    command.execute(output: output)
+
+    expected_output = <<-OUT
+
+Coin TRX  Base Currency USD  Time 01 April 2018 at 12:30:54 PM UTC
+
+┌──────────┬─────────┬────────────┬────────────┬──────────┬──────────┬─────────┬─────────────────┐
+│ Market   │   Price │   Chg. 24H │  Chg.% 24H │ Open 24H │ High 24H │ Low 24H │ Direct Vol. 24H │
+├──────────┼─────────┼────────────┼────────────┼──────────┼──────────┼─────────┼─────────────────┤
+│ Bitfinex │ $ 0.074 │ ▲ $ 0.0083 │ ▲ 1263.48% │  $ 0.066 │  $ 0.076 │ $ 0.065 │  $ 1,874,744.19 │
+│ HitBTC   │ $ 0.075 │ ▲ $ 0.0087 │ ▲ 1313.71% │  $ 0.066 │  $ 0.076 │ $ 0.066 │  $ 1,007,006.56 │
+│ Yobit    │ $ 0.078 │ ▲ $ 0.0092 │ ▲ 1347.84% │  $ 0.069 │  $ 0.079 │ $ 0.068 │    $ 44,741.073 │
+│ BitFlip  │ $ 0.084 │   ▲ $ 0.01 │ ▲ 1351.35% │  $ 0.074 │  $ 0.084 │ $ 0.071 │        $ 922.52 │
+└──────────┴─────────┴────────────┴────────────┴──────────┴──────────┴─────────┴─────────────────┘
+    OUT
+
+    expect(output.string).to eq(expected_output)
+  end
 end
