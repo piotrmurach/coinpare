@@ -66,6 +66,16 @@ module Coinpare
       end
     end
 
+    def precision(value, decimals = 2)
+      part = value.to_s.split('.')[1]
+      part.nil? ? 0 : (part.index(/[^0]/) + decimals)
+    end
+
+    def round_to(value, prec = nil)
+      prec = precision(value) if prec.nil?
+      (value * 10**prec).round.to_f / 10**prec
+    end
+
     def number_to_currency(value)
       whole, part = value.to_s.split('.')
       "#{whole.gsub(/(\d)(?=(\d{3})+(?!\d))/, '\\1,')}.#{part}"
