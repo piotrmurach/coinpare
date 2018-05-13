@@ -68,7 +68,8 @@ module Coinpare
 
     def precision(value, decimals = 2)
       part = value.to_s.split('.')[1]
-      part.nil? ? 0 : (part.index(/[^0]/) + decimals)
+      return 0 if part.nil?
+      value.between?(0, 1) ? (part.index(/[^0]/) + decimals) : decimals
     end
 
     def round_to(value, prec = nil)
