@@ -67,7 +67,8 @@ module Coinpare
     end
 
     def number_to_currency(value)
-      value.to_s.gsub(/(\d)(?=(\d\d\d)+(?!\d))/, '\\1,')
+      whole, part = value.to_s.split('.')
+      "#{whole.gsub(/(\d)(?=(\d{3})+(?!\d))/, '\\1,')}.#{part}"
     end
 
     # Execute this command
