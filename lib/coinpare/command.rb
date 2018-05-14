@@ -36,16 +36,18 @@ module Coinpare
 
     # Provide arrow for marking value growth or decline
     # @api public
-    def pick_arrow(growing)
-      growing ? SYMBOLS[:up_arrow] : SYMBOLS[:down_arrow]
+    def pick_arrow(change)
+      return if change.zero?
+      change > 0 ? SYMBOLS[:up_arrow] : SYMBOLS[:down_arrow]
     end
 
     def add_color(str, color)
-      @options["no-color"] ? str : @pastel.decorate(str, color)
+      @options["no-color"] || color == :none ? str : @pastel.decorate(str, color)
     end
 
-    def pick_color(growing)
-      growing ? :green : :red
+    def pick_color(change)
+      return :none if change.zero?
+      change > 0 ? :green : :red
     end
 
     def percent(value)
