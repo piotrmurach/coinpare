@@ -3,7 +3,7 @@
 module Coinpare
   class Command
     SYMBOLS = {
-      down_arrow: '▾',
+      down_arrow: '▼',
       up_arrow: '▲'
     }.freeze
 
