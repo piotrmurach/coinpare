@@ -111,6 +111,10 @@ module Coinpare
       Example:
 
       > $ coinpare markets BTC --base USD
+
+      Example:
+
+      > $ coinpare markets ETH -b BTC
     DESC
     method_option :base, aliases: '-b', type: :string, default: "USD",
                          desc: 'The currency symbol to convert into',

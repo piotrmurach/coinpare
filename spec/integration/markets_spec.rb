@@ -23,6 +23,10 @@ Description:
   Example:
 
   > $ coinpare markets BTC --base USD
+
+  Example:
+
+  > $ coinpare markets ETH -b BTC
     OUT
   end
 end
