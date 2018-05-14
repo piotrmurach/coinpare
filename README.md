@@ -15,6 +15,10 @@
 
 > Compare cryptocurrency trading data across multiple exchanges and blockchains in the comfort of your terminal window.
 
+A screenshot is worth a thousand words:
+
+![Interface](https://github.com/piotrmurach/coinpare/raw/master/assets/coinpare_coins.png)
+
 ## Installation
 
 This project uses Ruby, before installing the `coinpare` tool, you'll need to ensure Ruby is installed on your machine.
@@ -50,6 +54,65 @@ $ coinpare
 
 ## Usage
 
+To use all available commands run:
+
+```bash
+$ coinpare
+```
+
+## View coins
+
+You can see top 10 trading info (price, volume, open, high, low etc) of any cyptocurrency in any other currency by running:
+
+```bash
+$ coinpare coins
+```
+
+By default, `USD` is used as the base currency price which you can change by passing `--base` or `-b` flag:
+
+```bash
+$ coinpare coins --base BTC
+```
+
+If you wish to see more currencies use `--top` flag:
+
+```bash
+$ coinpare coins --top 30
+```
+
+Alternatively, you can specify exactly the coins you're interested in by naming them :
+
+```bash
+$ coinpare coins ETH BCH LTC --base btc
+```
+
+You can also change the default exchange:
+
+```bash
+$ coinpare coins BTC ETH --exchnage coinbase
+```
+
+See (markets)[] for more information
+
+## View markets
+
+## Create portfolio
+
+### Add/remove coins
+
+**Coinpare** allows you to easily add and remove individual coins to and from your holdings portfolio.
+
+To add a coin do
+
+```bash
+$ coinpare holdings --add
+```
+
+```bash
+$ coinpare holdings --remove
+```
+
+For example, the following screenshot shows adding a 'ETH' coin:
 
 ## Development
 
