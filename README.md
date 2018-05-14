@@ -17,7 +17,7 @@
 
 A screenshot is worth a thousand words:
 
-![Interface](https://github.com/piotrmurach/coinpare/raw/master/assets/coinpare_coins.png)
+![CoinsView](https://github.com/piotrmurach/coinpare/raw/master/assets/coinpare_coins.png)
 
 ## Installation
 
@@ -60,6 +60,8 @@ To use all available commands run:
 $ coinpare
 ```
 
+![Interface](https://github.com/piotrmurach/coinpare/raw/master/assets/coinpare_interface.png)
+
 ## View coins
 
 You can see top 10 trading info (price, volume, open, high, low etc) of any cyptocurrency in any other currency by running:
@@ -92,11 +94,19 @@ You can also change the default exchange:
 $ coinpare coins BTC ETH --exchnage coinbase
 ```
 
-See (markets)[] for more information
+See [view markets](#view-markets) for more information.
 
 ## View markets
 
 ## Create portfolio
+
+There is an easy way for you to keep track of all your investments by running `holdings` command.
+You will be presented with a prompt that will guide you through the portfolio setup and allow you to add as many
+holdings as you wish.
+
+```bash
+$ coinpare holdings
+```
 
 ### Add/remove coins
 
