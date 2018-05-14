@@ -98,6 +98,7 @@ module Coinpare
       def ask_coin
         -> (prompt) do
           key('name').ask('What coin do you own?') do |q|
+            q.required true
             q.default 'BTC'
             q.convert ->(coin) { coin.upcase }
           end
@@ -180,8 +181,8 @@ module Coinpare
           past_price = coin['amount'] * coin['price']
           curr_price = coin['amount'] * coin_data['PRICE']
           to_symbol = coin_display_data['TOSYMBOL']
-          growing = (curr_price - past_price) > 0
-          arrow = pick_arrow(growing)
+          change = curr_price - past_price
+          arrow = pick_arrow(change)
           total_buy +=  past_price
           total += curr_price
 
@@ -190,27 +191,26 @@ module Coinpare
             coin['amount'],
             "#{to_symbol} #{coin['price'].round(2)}",
             "#{to_symbol} #{past_price.round(2)}",
-            add_color("#{to_symbol} #{coin_data['PRICE'].round(2)}", pick_color(growing)),
-            add_color("#{to_symbol} #{curr_price.round(2)}", pick_color(growing)),
+            add_color("#{to_symbol} #{coin_data['PRICE'].round(2)}", pick_color(change)),
+            add_color("#{to_symbol} #{curr_price.round(2)}", pick_color(change)),
             add_color("#{arrow} #{to_symbol} #{(curr_price - past_price).round(2)}",
-                      pick_color(growing)),
+                      pick_color(change)),
             add_color("#{arrow} #{percent_change(past_price, curr_price).round(2)}%",
-                      pick_color(growing))
+                      pick_color(change))
           ]
           table << coin_details
         end
 
         total_change = percent_change(total_buy, total)
-        growing = total_change > 0
-        arrow = pick_arrow(total_change > 0)
+        arrow = pick_arrow(total_change)
 
         table << [
           { value: add_color('ALL', :cyan), alignment: :left}, '-', '-',
           "#{to_symbol} #{total_buy.round(2)}", '-',
-          add_color("#{to_symbol} #{total.round(2)}", pick_color(growing)),
+          add_color("#{to_symbol} #{total.round(2)}", pick_color(total_change)),
           add_color("#{arrow} #{to_symbol} #{(total - total_buy).round(2)}",
-                    pick_color(growing)),
-          add_color("#{arrow} #{total_change.round(2)}%", pick_color(growing))
+                    pick_color(total_change)),
+          add_color("#{arrow} #{total_change.round(2)}%", pick_color(total_change))
         ]
 
         table

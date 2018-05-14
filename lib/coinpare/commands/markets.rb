@@ -60,12 +60,12 @@ module Coinpare
         ])
 
         data.each do |market|
-          growing = market['CHANGE24HOUR'] > 0
+          change24h = market['CHANGE24HOUR']
           market_details = [
             { value: add_color(market['MARKET'], :yellow), alignment: :left },
             "#{to_symbol} #{number_to_currency(round_to(market['PRICE']))}",
-            add_color("#{pick_arrow(growing)} #{to_symbol} #{number_to_currency(round_to(market['CHANGE24HOUR']))}", pick_color(growing)),
-            add_color("#{pick_arrow(growing)} #{round_to(market['CHANGEPCT24HOUR'] * 100)}%", pick_color(growing)),
+            add_color("#{pick_arrow(change24h)} #{to_symbol} #{number_to_currency(round_to(change24h))}", pick_color(change24h)),
+            add_color("#{pick_arrow(change24h)} #{round_to(market['CHANGEPCT24HOUR'] * 100)}%", pick_color(change24h)),
             "#{to_symbol} #{number_to_currency(round_to(market['OPEN24HOUR']))}",
             "#{to_symbol} #{number_to_currency(round_to(market['HIGH24HOUR']))}",
             "#{to_symbol} #{number_to_currency(round_to(market['LOW24HOUR']))}",

@@ -32,7 +32,7 @@ module Coinpare
         response = Fetcher.fetch_prices(@names.map(&:upcase).join(','),
                                 @options['base'].upcase, @options)
 
-        table = setup_table(response['DISPLAY'])
+        table = setup_table(response['RAW'], response['DISPLAY'])
 
         @spinner.stop
 
@@ -45,7 +45,7 @@ module Coinpare
 
       private
 
-      def setup_table(data)
+      def setup_table(raw_data, display_data)
         table = TTY::Table.new(header: [
           { value: 'Coin', alignment: :left },
           'Price',
@@ -60,13 +60,14 @@ module Coinpare
         ])
 
         @names.each do |name|
-          coin_data = data[name.upcase][@options['base'].upcase]
-          growing = !coin_data['CHANGE24HOUR'].include?('-')
+          coin_data = display_data[name.upcase][@options['base'].upcase]
+          coin_raw_data = raw_data[name.upcase][@options['base'].upcase]
+          change24h = coin_raw_data['CHANGE24HOUR']
           coin_details = [
             { value: add_color(name.upcase, :yellow), alignment: :left },
-            add_color(coin_data['PRICE'], pick_color(growing)),
-            add_color("#{pick_arrow(growing)} #{coin_data['CHANGE24HOUR']}", pick_color(growing)),
-            add_color("#{pick_arrow(growing)} #{coin_data['CHANGEPCT24HOUR']}%", pick_color(growing)),
+            add_color(coin_data['PRICE'], pick_color(change24h)),
+            add_color("#{pick_arrow(change24h)} #{coin_data['CHANGE24HOUR']}", pick_color(change24h)),
+            add_color("#{pick_arrow(change24h)} #{coin_data['CHANGEPCT24HOUR']}%", pick_color(change24h)),
             coin_data['OPEN24HOUR'],
             coin_data['HIGH24HOUR'],
             coin_data['LOW24HOUR'],
