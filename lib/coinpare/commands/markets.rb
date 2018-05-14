@@ -63,7 +63,7 @@ module Coinpare
           change24h = market['CHANGE24HOUR']
           market_details = [
             { value: add_color(market['MARKET'], :yellow), alignment: :left },
-            "#{to_symbol} #{number_to_currency(round_to(market['PRICE']))}",
+            add_color("#{to_symbol} #{number_to_currency(round_to(market['PRICE']))}", pick_color(change24h)),
             add_color("#{pick_arrow(change24h)} #{to_symbol} #{number_to_currency(round_to(change24h))}", pick_color(change24h)),
             add_color("#{pick_arrow(change24h)} #{round_to(market['CHANGEPCT24HOUR'] * 100)}%", pick_color(change24h)),
             "#{to_symbol} #{number_to_currency(round_to(market['OPEN24HOUR']))}",
