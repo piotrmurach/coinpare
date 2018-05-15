@@ -4,6 +4,7 @@ require 'pastel'
 require 'tty-pager'
 require 'tty-spinner'
 require 'tty-table'
+require 'timers'
 
 require_relative '../command'
 require_relative '../fetcher'
@@ -11,39 +12,75 @@ require_relative '../fetcher'
 module Coinpare
   module Commands
     class Coins < Coinpare::Command
+      # The default interval for auto updating data
+      DEFAULT_INTERVAL = 5
+
+      trap('SIGINT') { exit }
+
       def initialize(names, options)
         @names = names
         @options = options
         @pastel = Pastel.new
+        @timers = Timers::Group.new
         @spinner = TTY::Spinner.new(':spinner Fetching data...',
                                     format: :dots, clear: true)
       end
 
       def execute(output: $stdout)
-        @pager = TTY::Pager::BasicPager.new(output: output)
+        pager = TTY::Pager::BasicPager.new(output: output)
         @spinner.auto_spin
 
-        if @names.empty? # no coins provided
-          coins_response = Fetcher.fetch_top_coins_by_volume(@options['base'].upcase, @options)
-          top_coins = coins_response['Data']
-          @names = top_coins.map { |coin| coin['CoinInfo']['Name'] }[0...@options['top']]
+        if @options['watch']
+          output.print cursor.hide
+          interval = @options['watch'].to_f > 0 ? @options['watch'].to_f : DEFAULT_INTERVAL
+          @timers.now_and_every(interval) { display_coins(output, pager) }
+          loop { @timers.wait }
+        else
+          display_coins(output, pager)
         end
-
-        response = Fetcher.fetch_prices(@names.map(&:upcase).join(','),
-                                @options['base'].upcase, @options)
-
-        table = setup_table(response['RAW'], response['DISPLAY'])
-
-        @spinner.stop
-
-        output.puts banner(@options)
-        @pager.page(table.render(:unicode, padding: [0, 1], alignment: :right))
-        output.puts
       ensure
         @spinner.stop
+        if @options['watch']
+          @timers.cancel
+          output.print cursor.clear_screen_down
+          output.print cursor.show
+        end
       end
 
       private
+
+      def display_coins(output, pager)
+        if @names.empty? # no coins provided
+          @names = setup_top_coins
+        end
+        response = Fetcher.fetch_prices(@names.map(&:upcase).join(','),
+                                        @options['base'].upcase, @options)
+        return unless response
+        table = setup_table(response['RAW'], response['DISPLAY'])
+        @spinner.stop
+
+        lines = 4 + table.rows_size + 3
+        clear_output(output, lines) { print_results(table, output, pager) }
+      end
+
+      def clear_output(output, lines)
+        output.print cursor.clear_screen_down if @options['watch']
+        yield if block_given?
+        output.print cursor.up(lines) if @options['watch']
+      end
+
+      def print_results(table, output, pager)
+        output.puts banner(@options)
+        pager.page(table.render(:unicode, padding: [0, 1], alignment: :right))
+        output.puts
+      end
+
+      def setup_top_coins
+        response = Fetcher.fetch_top_coins_by_volume(@options['base'].upcase,
+                                                     @options)
+        return unless response
+        response['Data'].map { |coin| coin['CoinInfo']['Name'] }[0...@options['top']]
+      end
 
       def setup_table(raw_data, display_data)
         table = TTY::Table.new(header: [
