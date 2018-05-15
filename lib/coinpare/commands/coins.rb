@@ -59,7 +59,7 @@ module Coinpare
         table = setup_table(response['RAW'], response['DISPLAY'])
         @spinner.stop
 
-        lines = 4 + table.rows_size + 3
+        lines = banner(@options).lines.size + 1 + table.rows_size + 3
         clear_output(output, lines) { print_results(table, output, pager) }
       end
 
