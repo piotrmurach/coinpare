@@ -11,9 +11,9 @@ Options:
   -e, [--exchange=name]      # Name of exchange
                              # Default: CCCAGG
   -h, [--help], [--no-help]  # Display usage information
-  -t, [--top=N]              # The number of top coins by total volume accross all markets in 24 hours
+  -t, [--top=n]              # The number of top coins by total volume accross all markets in 24 hours
                              # Default: 10
-      [--track=BTC TRX LTC]  # Save coins that you wish to track automatically
+  -w, [--watch=n]            # Automatically refresh data every n seconds, default 5 sec
       [--no-color]           # Disable colorization in output
 
 Description:

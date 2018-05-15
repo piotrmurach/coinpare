@@ -50,10 +50,10 @@ module Coinpare
                              banner: 'name'
     method_option :help, aliases: '-h', type: :boolean,
                          desc: 'Display usage information'
-    method_option :top, aliases: '-t', type: :numeric, default: 10,
+    method_option :top, aliases: '-t', type: :numeric, default: 10, banner: 'n',
                         desc: "The number of top coins by total volume accross all markets in 24 hours"
-    method_option :track, type: :array, banner: 'BTC TRX LTC',
-                          desc: "Save coins that you wish to track automatically"
+    method_option :watch, aliases: '-w', banner: 'n',
+                          desc: 'Automatically refresh data every n seconds, default 5 sec'
     def coins(*names)
       if options[:help]
         invoke :help, ['coins']
