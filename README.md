@@ -47,10 +47,10 @@ $ coinpare
 
 ## Features
 
-* Compare chosen or top coins by trading volume
+* Compare chosen or top coins trading info(price, vol, open, high, low etc)
 * Compare top markets by a trading coin pair
-* Create your custom portfolio
-* Compare valuations for your chosen holdings
+* Create your custom portfolio and track your holdings
+* Auto refresh cryptocurrencies info with a configurable time interval
 
 ## Usage
 
@@ -94,9 +94,45 @@ You can also change the default exchange:
 $ coinpare coins BTC ETH --exchnage coinbase
 ```
 
-See [view markets](#view-markets) for more information.
+See [view markets](#view-markets) for more information on available exchanges.
+
+Finally, if you want to auto refresh data use `--watch` or `-w` flag which accepts seconds:
+
+```bash
+$ coinpare coins --watch
+$ coinpare coins -w
+$ coinpare coins BTC ETH LTC ZEC --watch
+```
 
 ## View markets
+
+You can get top markets by volume for any currency pair. By default 10 top exchanges for the BTC and USD pair by their total volume across all markets in the last 24 hours are displayed.
+
+```bash
+$ coinpare markets
+```
+
+is equivalent to:
+
+```bash
+$ coinpare markets BTC --base USD
+```
+
+An example output:
+
+![MarketsView](https://github.com/piotrmurach/coinpare/raw/master/assets/coinpare_markets.png)
+
+To change the pair do:
+
+```bash
+$ coinpare markets ETH -b BTC
+```
+
+You can specify the number of displayed exchanges with `--top` or `-t` flag:
+
+```bash
+$ coinpare markets --top 30
+```
 
 ## Create portfolio
 
@@ -137,6 +173,10 @@ Bug reports and pull requests are welcome on GitHub at https://github.com/[USERN
 ## Code of Conduct
 
 Everyone interacting in the Coinpare project’s codebases, issue trackers, chat rooms and mailing lists is expected to follow the [code of conduct](https://github.com/[USERNAME]/coinpare/blob/master/CODE_OF_CONDUCT.md).
+
+## Credits
+
+All the data is obtained from [CryptoCompare](https://www.cryptocompare.com/api).
 
 ## Copyright
 
