@@ -19,8 +19,18 @@ module Coinpare
     module_function :handle_response
 
     def fetch_json(url)
-      response = Net::HTTP.get(URI.parse(url))
-      handle_response(JSON.parse(response))
+      uri = URI.parse(url)
+      http = Net::HTTP.new(uri.host, uri.port)
+      http.read_timeout = 5
+      http.use_ssl = uri.scheme == 'https'
+      response = http.start { |req| req.get(uri.request_uri) }
+      case response
+      when Net::HTTPSuccess
+        handle_response(JSON.parse(response.body))
+      else
+        response.value
+      end
+    rescue Net::ReadTimeout
     end
     module_function :fetch_json
 
