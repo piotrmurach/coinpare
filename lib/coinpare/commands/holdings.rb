@@ -37,7 +37,6 @@ module Coinpare
         end
 
         config.read if config_saved
-        # puts "CONFIG: #{config.to_hash.inspect}"
 
         holdings = config.fetch('holdings')
         if holdings.nil? || (holdings && holdings.empty?)
@@ -75,6 +74,7 @@ module Coinpare
                                         settings['base'],
                                         overridden_settings)
 
+        return unless response
         table = setup_table(response['RAW'], response['DISPLAY'])
 
         @spinner.stop
@@ -100,6 +100,7 @@ module Coinpare
           key('name').ask('What coin do you own?') do |q|
             q.required true
             q.default 'BTC'
+            q.validate(/\w{2,}/, 'Currency can only be chars.')
             q.convert ->(coin) { coin.upcase }
           end
           key('amount').ask('What amount?') do |q|
@@ -118,17 +119,23 @@ module Coinpare
       def add_coin(input, output)
         prompt = create_prompt(input, output)
         context = self
-        prompt.collect(&context.ask_coin)
+        data = prompt.collect(&context.ask_coin)
+        output.print cursor.up(3)
+        output.print cursor.clear_screen_down
+        data
       end
 
       def remove_coin(input, output)
         prompt = create_prompt(input, output)
         holdings = config.fetch('holdings')
-        prompt.multi_select('Which hodlings to remove?') do |menu|
+        data = prompt.multi_select('Which hodlings to remove?') do |menu|
           holdings.each do |holding|
             menu.choice "#{holding['name']} (#{holding['amount']})", holding
           end
         end
+        output.print cursor.up(1)
+        output.print cursor.clear_line
+        data
       end
 
       def setup_portfolio(input, output)
@@ -141,7 +148,7 @@ module Coinpare
         base = @options['base']
         exchange = @options['exchange']
 
-        prompt.collect do
+        data = prompt.collect do
           key('settings') do
             key('base').ask('What base currency to convert holdings to?') do |q|
               q.default base
@@ -157,6 +164,14 @@ module Coinpare
             key('holdings').values(&context.ask_coin)
           end
         end
+
+        lines = 3 + # intro
+                2 + # base + exchange
+                data['holdings'].size * 4 + 1
+        output.print cursor.up(lines)
+        output.print cursor.clear_screen_down
+
+        data
       end
 
       def setup_table(raw_data, display_data)

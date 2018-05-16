@@ -31,24 +31,6 @@ RSpec.describe Coinpare::Commands::Holdings, type: :cli do
     command.execute(input: input, output: output)
 
     expected_output = <<-OUT
-Currently you have no investments setup
-Let's change that and setup your altfolio!
-
-[c] What base currency to convert holdings to? (USD) \e[2K\e[1G[c] What base currency to convert holdings to? (USD) 
-\e[1A\e[2K\e[1G[c] What base currency to convert holdings to? USD
-[c] What exchange would you like to use? (CCCAGG) \e[2K\e[1G[c] What exchange would you like to use? (CCCAGG) 
-\e[1A\e[2K\e[1G[c] What exchange would you like to use? CCCAGG
-[c] Do you want to add coin to your altfolio? (Y/n) \e[2K\e[1G[c] Do you want to add coin to your altfolio? (Y/n) Y\e[2K\e[1G[c] Do you want to add coin to your altfolio? (Y/n) Y
-\e[1A\e[2K\e[1G[c] Do you want to add coin to your altfolio? Yes
-[c] What coin do you own? (BTC) \e[2K\e[1G[c] What coin do you own? (BTC) b\e[2K\e[1G[c] What coin do you own? (BTC) bt\e[2K\e[1G[c] What coin do you own? (BTC) btc\e[2K\e[1G[c] What coin do you own? (BTC) btc
-\e[1A\e[2K\e[1G[c] What coin do you own? btc
-[c] What amount? \e[2K\e[1G[c] What amount? 1\e[2K\e[1G[c] What amount? 1
-\e[1A\e[2K\e[1G[c] What amount? 1
-[c] At what price per coin? \e[2K\e[1G[c] At what price per coin? 1\e[2K\e[1G[c] At what price per coin? 11\e[2K\e[1G[c] At what price per coin? 115\e[2K\e[1G[c] At what price per coin? 1150\e[2K\e[1G[c] At what price per coin? 11500\e[2K\e[1G[c] At what price per coin? 11500
-\e[1A\e[2K\e[1G[c] At what price per coin? 11500
-[c] Do you want to add coin to your altfolio? (Y/n) \e[2K\e[1G[c] Do you want to add coin to your altfolio? (Y/n) n\e[2K\e[1G[c] Do you want to add coin to your altfolio? (Y/n) n
-\e[1A\e[2K\e[1G[c] Do you want to add coin to your altfolio? no
-
 Exchange CCCAGG  Currency USD  Time 01 April 2018 at 12:30:54 PM UTC
 
 ┌──────┬────────┬───────────┬─────────────┬────────────┬──────────────────┬──────────────┬───────────┐
@@ -58,7 +40,7 @@ Exchange CCCAGG  Currency USD  Time 01 April 2018 at 12:30:54 PM UTC
 │ ALL  │      - │         - │   $ 11500.0 │          - │        $ 7002.45 │ ▼ $ -4497.55 │ ▼ -39.11% │
 └──────┴────────┴───────────┴─────────────┴────────────┴──────────────────┴──────────────┴───────────┘
     OUT
-    expect(output.string).to eq(expected_output)
+    expect(output.string).to include(expected_output)
   end
 
   it "reads holdings and settings from coinpare.toml file" do
@@ -132,13 +114,6 @@ Exchange CCCAGG  Currency USD  Time 01 April 2018 at 12:30:54 PM UTC
     expect(config.fetch(:holdings)).to include({"amount"=>4.0, "name" => "LTC", "price" => 120.0})
 
     expected_output = <<-OUT
-[c] What coin do you own? (BTC) \e[2K\e[1G[c] What coin do you own? (BTC) L\e[2K\e[1G[c] What coin do you own? (BTC) LT\e[2K\e[1G[c] What coin do you own? (BTC) LTC\e[2K\e[1G[c] What coin do you own? (BTC) LTC
-\e[1A\e[2K\e[1G[c] What coin do you own? LTC
-[c] What amount? \e[2K\e[1G[c] What amount? 4\e[2K\e[1G[c] What amount? 4
-\e[1A\e[2K\e[1G[c] What amount? 4
-[c] At what price per coin? \e[2K\e[1G[c] At what price per coin? 1\e[2K\e[1G[c] At what price per coin? 12\e[2K\e[1G[c] At what price per coin? 120\e[2K\e[1G[c] At what price per coin? 120
-\e[1A\e[2K\e[1G[c] At what price per coin? 120
-
 Exchange CCCAGG  Currency USD  Time 01 April 2018 at 12:30:54 PM UTC
 
 ┌──────┬────────┬──────────┬─────────────┬────────────┬──────────────────┬──────────────┬───────────┐
@@ -152,10 +127,10 @@ Exchange CCCAGG  Currency USD  Time 01 April 2018 at 12:30:54 PM UTC
 └──────┴────────┴──────────┴─────────────┴────────────┴──────────────────┴──────────────┴───────────┘
     OUT
 
-    expect(output.string).to eq(expected_output)
+    expect(output.string).to include(expected_output)
   end
 
-  it "removes holdings" do
+  it "removes selected holdings" do
     input = StringIO.new
     output = StringIO.new
     options = {"base"=>"USD", "exchange"=>"CCCAGG", "no-color"=>true, "remove" => true}
