@@ -139,9 +139,8 @@ module Coinpare
       end
 
       def setup_portfolio(input, output)
-        output.puts "Currently you have no investments setup"
-        output.puts "Let's change that and setup your altfolio!"
-        output.puts
+        output.print "\nCurrently you have no investments setup...\n" \
+                     "Let's change that and create your altfolio!\n\n"
 
         prompt = create_prompt(input, output)
         context = self
@@ -165,7 +164,7 @@ module Coinpare
           end
         end
 
-        lines = 3 + # intro
+        lines = 4 + # intro
                 2 + # base + exchange
                 data['holdings'].size * 4 + 1
         output.print cursor.up(lines)
