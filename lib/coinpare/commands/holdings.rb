@@ -57,7 +57,9 @@ module Coinpare
         end
 
         # Persist current configuration
-        config.write(force: true)
+        home_file = ::File.join(Dir.home, "#{config.filename}#{config.extname}")
+        file = config.source_file
+        config.write(file.nil? ? home_file : file, force: true)
         if no_holdings_left
           output.puts add_color("Please add holdings to your altfolio!", :green)
           return
