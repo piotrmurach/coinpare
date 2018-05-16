@@ -7,6 +7,11 @@ module Coinpare
       up_arrow: '▲'
     }.freeze
 
+    # The default interval for auto updating data
+    DEFAULT_INTERVAL = 5
+
+    trap('SIGINT') { exit }
+
     # Main configuration
     # @api public
     def config
