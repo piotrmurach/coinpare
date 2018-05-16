@@ -159,13 +159,55 @@ $ coinpare markets -w
 
 ## Create portfolio
 
-There is an easy way for you to keep track of all your investments by running `holdings` command.
-You will be presented with a prompt that will guide you through the portfolio setup and allow you to add as many
-holdings as you wish.
+There is an easy way for you to keep track of all your investments using the `holdings` command.
+When run for the first time, you will be presented with a prompt that will guide you through the portfolio setup and allow you to add as many holdings as you wish.
 
 ```bash
 $ coinpare holdings
 ```
+
+The prompt may look:
+
+![CreateHoldings](https://github.com/piotrmurach/coinpare/raw/master/assets/coinpare_create_holdings.png)
+
+All your holdings information will be persisted in your user home directory in a file called `coinpare.toml`. You can edit this file directly using your configured editor by passing the `--edit` flag:
+
+```bash
+$ coinpare holdings --edit
+```
+
+An example configuration file may look:
+
+```
+[[holdings]]
+amount = 1.0
+name = "BTC"
+price = 9000.0
+
+[[holdings]]
+amount = 5.0
+name = "LTC"
+price = 100.0
+
+[[holdings]]
+amount = 2.3
+name = "BTC"
+price = 5000.0
+
+[[holdings]]
+amount = 1000.0
+name = "TRX"
+price = 2.0
+
+[settings]
+base = "USD"
+color = true
+exchange = "CCCAGG"
+```
+
+Once configured, any subsequent execution of `holdings` command will display current prices and totals. For example, the configuration file will result in:
+
+![ViewHoldings](https://github.com/piotrmurach/coinpare/raw/master/assets/coinpare_holdings.png)
 
 ### Add/remove coins
 
