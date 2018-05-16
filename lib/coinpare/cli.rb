@@ -81,6 +81,8 @@ module Coinpare
     method_option :base, aliases: '-b', type: :string, default: "USD",
                          desc: 'The currency symbol to convert into',
                          banner: 'currency'
+    method_option :clear, type: :boolean, default: false,
+                          desc: 'Remove all coins from your existing holdings'
     method_option :edit, type: :string, banner: 'editor',
                          desc: 'Open the holdings configuration file for editing in EDITOR, or the default editor if not specified.'
     method_option :exchange, aliases: '-e', type: :string, default: "CCCAGG",
@@ -90,8 +92,6 @@ module Coinpare
                          desc: 'Display usage information'
     method_option :remove, type: :boolean,
                   desc: "Remove the given coin(s) from holdings"
-    method_option :reset, type: :boolean, default: false,
-                          desc: 'Remove all coins from your existing holdings'
     def holdings(*)
       if options[:help]
         invoke :help, ['holdings']

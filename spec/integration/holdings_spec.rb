@@ -9,12 +9,12 @@ Options:
       [--add], [--no-add]        # Add a new coin without altering any existhing holdings
   -b, [--base=currency]          # The currency symbol to convert into
                                  # Default: USD
+      [--clear], [--no-clear]    # Remove all coins from your existing holdings
       [--edit=editor]            # Open the holdings configuration file for editing in EDITOR, or the default editor if not specified.
   -e, [--exchange=name]          # Name of exchange
                                  # Default: CCCAGG
   -h, [--help], [--no-help]      # Display usage information
       [--remove], [--no-remove]  # Remove the given coin(s) from holdings
-      [--reset], [--no-reset]    # Remove all coins from your existing holdings
       [--no-color]               # Disable colorization in output
 
 Description:

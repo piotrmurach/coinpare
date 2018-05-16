@@ -48,6 +48,13 @@ module Coinpare
         elsif @options['remove']
           coin_info = remove_coin(input, output)
           config.remove(*coin_info, from: ['holdings'])
+        elsif @options['clear']
+          prompt = create_prompt(input, output)
+          answer = prompt.yes?('Do you want to remove all holdings?')
+          if answer
+            config.delete('holdings')
+            output.puts add_color("All holdings removed", :red)
+          end
         end
 
         holdings = config.fetch('holdings')
@@ -62,7 +69,7 @@ module Coinpare
         config.write(file.nil? ? home_file : file, force: true)
         if no_holdings_left
           output.puts add_color("Please add holdings to your altfolio!", :green)
-          return
+          exit
         end
 
         settings = config.fetch('settings')
