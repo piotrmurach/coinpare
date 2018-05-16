@@ -204,28 +204,25 @@ module Coinpare
           coin_details = [
             { value: add_color(coin['name'], :yellow), alignment: :left },
             coin['amount'],
-            "#{to_symbol} #{coin['price'].round(2)}",
-            "#{to_symbol} #{past_price.round(2)}",
-            add_color("#{to_symbol} #{coin_data['PRICE'].round(2)}", pick_color(change)),
-            add_color("#{to_symbol} #{curr_price.round(2)}", pick_color(change)),
-            add_color("#{arrow} #{to_symbol} #{(curr_price - past_price).round(2)}",
-                      pick_color(change)),
-            add_color("#{arrow} #{percent_change(past_price, curr_price).round(2)}%",
-                      pick_color(change))
+            "#{to_symbol} #{number_to_currency(round_to(coin['price']))}",
+            "#{to_symbol} #{number_to_currency(round_to(past_price))}",
+            add_color("#{to_symbol} #{number_to_currency(round_to(coin_data['PRICE']))}", pick_color(change)),
+            add_color("#{to_symbol} #{number_to_currency(round_to(curr_price))}", pick_color(change)),
+            add_color("#{arrow} #{to_symbol} #{number_to_currency(round_to(change))}", pick_color(change)),
+            add_color("#{arrow} #{round_to(percent_change(past_price, curr_price))}%", pick_color(change))
           ]
           table << coin_details
         end
 
-        total_change = percent_change(total_buy, total)
+        total_change = total - total_buy
         arrow = pick_arrow(total_change)
 
         table << [
           { value: add_color('ALL', :cyan), alignment: :left}, '-', '-',
-          "#{to_symbol} #{total_buy.round(2)}", '-',
-          add_color("#{to_symbol} #{total.round(2)}", pick_color(total_change)),
-          add_color("#{arrow} #{to_symbol} #{(total - total_buy).round(2)}",
-                    pick_color(total_change)),
-          add_color("#{arrow} #{total_change.round(2)}%", pick_color(total_change))
+          "#{to_symbol} #{number_to_currency(round_to(total_buy))}", '-',
+          add_color("#{to_symbol} #{number_to_currency(round_to(total))}", pick_color(total_change)),
+          add_color("#{arrow} #{to_symbol} #{number_to_currency(round_to(total_change))}", pick_color(total_change)),
+          add_color("#{arrow} #{round_to(percent_change(total_buy, total))}%", pick_color(total_change))
         ]
 
         table
