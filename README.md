@@ -1,3 +1,8 @@
+<div align="center">
+  <img width="236" src="https://cdn.rawgit.com/piotrmurach/coinpare/master/assets/coinpare_logo_flat.png" alt="tty logo" />
+</div>
+<br/>
+
 # Coinpare [![Gitter](https://badges.gitter.im/Join%20Chat.svg)][gitter]
 
 [![Gem Version](https://badge.fury.io/rb/coinpare.svg)][gem]
@@ -96,12 +101,23 @@ $ coinpare coins BTC ETH --exchnage coinbase
 
 See [view markets](#view-markets) for more information on available exchanges.
 
-Finally, if you want to auto refresh data use `--watch` or `-w` flag which accepts seconds:
+Finally, if you want to auto refresh data use `--watch` or `-w` flag:
 
 ```bash
 $ coinpare coins --watch
 $ coinpare coins -w
+```
+
+You can watch for changes on your preferred cryptocurrencies:
+
+```bash
 $ coinpare coins BTC ETH LTC ZEC --watch
+```
+
+By default 5 seconds interval is used which you can change by providing a new value after `--watch` flag:
+
+```bash
+$ coinpare coins --watch 20   # every 20 seconds
 ```
 
 ## View markets
@@ -132,6 +148,13 @@ You can specify the number of displayed exchanges with `--top` or `-t` flag:
 
 ```bash
 $ coinpare markets --top 30
+```
+
+To watch for changes use the `--watch` or `-w` flag:
+
+```bash
+$ coinpare markets --watch
+$ coinpare markets -w
 ```
 
 ## Create portfolio
