@@ -126,6 +126,8 @@ module Coinpare
                          desc: 'Display usage information'
     method_option :top, aliases: '-t', type: :numeric, default: 10,
                         desc: "The number of top exchanges by total volume in 24 hours"
+    method_option :watch, aliases: '-w', banner: 'n',
+                          desc: 'Automatically refresh data every n seconds, default 5 sec'
     def markets(name = 'BTC')
       if options[:help]
         invoke :help, ['markets']

@@ -12,6 +12,7 @@ Options:
   -h, [--help], [--no-help]  # Display usage information
   -t, [--top=N]              # The number of top exchanges by total volume in 24 hours
                              # Default: 10
+  -w, [--watch=n]            # Automatically refresh data every n seconds, default 5 sec
       [--no-color]           # Disable colorization in output
 
 Description:
