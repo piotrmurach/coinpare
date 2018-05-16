@@ -12,11 +12,6 @@ require_relative '../fetcher'
 module Coinpare
   module Commands
     class Coins < Coinpare::Command
-      # The default interval for auto updating data
-      DEFAULT_INTERVAL = 5
-
-      trap('SIGINT') { exit }
-
       def initialize(names, options)
         @names = names
         @options = options
