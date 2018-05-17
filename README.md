@@ -213,17 +213,26 @@ Once configured, any subsequent execution of `holdings` command will display cur
 
 **Coinpare** allows you to easily add and remove individual coins to and from your holdings portfolio.
 
-To add a coin do
+To add a coin to your current portfolio use `--add` flag
 
 ```bash
 $ coinpare holdings --add
 ```
 
+For example, the following screenshot shows adding a 'ETH' coin:
+
+![AddHoldings](https://github.com/piotrmurach/coinpare/raw/master/assets/coinpare_holdings_add.png)
+
+To remove one or more coins from your current portfolio use `--remove` flag:
+
 ```bash
 $ coinpare holdings --remove
 ```
 
-For example, the following screenshot shows adding a 'ETH' coin:
+You will be presented with a menu similar to the one below:
+
+![RemoveHoldings](https://github.com/piotrmurach/coinpare/raw/master/assets/coinpare_holdings_remove.png)
+
 
 ## Development
 
