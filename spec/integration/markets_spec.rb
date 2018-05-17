@@ -1,7 +1,13 @@
 RSpec.describe "`coinpare markets` command", type: :cli do
   it "executes `markets --help` command successfully" do
-    output = `coinpare markets --help`
+    output = `coinpare markets --help --no-color`
     expect(output).to eq <<-OUT
+   ____           _                                       
+  / ___|   ___   (_)  _ __    _ __     __ _   _ __    ___ 
+ | |      / _ \\  | | | '_ \\  | '_ \\   / _` | | '__|  / _ \\
+ | |___  | (_) | | | | | | | | |_) | | (_| | | |    |  __/
+  \\____|  \\___/  |_| |_| |_| | .__/   \\__,_| |_|     \\___|
+                             |_|                          
 Usage:
   coinpare markets [NAME]
 

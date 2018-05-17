@@ -13,9 +13,9 @@ module Coinpare
     # Error raised by this runner
     Error = Class.new(StandardError)
 
-    def self.help(*args)
+    def help(*args)
       font =  TTY::Font.new(:standard)
-      pastel = Pastel.new
+      pastel = Pastel.new(enabled: !options['no-color'])
       puts pastel.yellow(font.write("Coinpare"))
       super
     end

@@ -1,7 +1,13 @@
 RSpec.describe "`coinpare holdings` command", type: :cli do
   it "executes `holdings --help` command successfully" do
-    output = `coinpare holdings --help`
+    output = `coinpare holdings --help --no-color`
     expect(output).to eq <<-OUT
+   ____           _                                       
+  / ___|   ___   (_)  _ __    _ __     __ _   _ __    ___ 
+ | |      / _ \\  | | | '_ \\  | '_ \\   / _` | | '__|  / _ \\
+ | |___  | (_) | | | | | | | | |_) | | (_| | | |    |  __/
+  \\____|  \\___/  |_| |_| |_| | .__/   \\__,_| |_|     \\___|
+                             |_|                          
 Usage:
   coinpare holdings
 

@@ -1,6 +1,12 @@
 RSpec.describe "`coinpare coins` command", type: :cli do
   it "displays usage info" do
     output = <<-OUT
+   ____           _                                       
+  / ___|   ___   (_)  _ __    _ __     __ _   _ __    ___ 
+ | |      / _ \\  | | | '_ \\  | '_ \\   / _` | | '__|  / _ \\
+ | |___  | (_) | | | | | | | | |_) | | (_| | | |    |  __/
+  \\____|  \\___/  |_| |_| |_| | .__/   \\__,_| |_|     \\___|
+                             |_|                          
 Usage:
   coinpare coins NAMES...
 
@@ -31,7 +37,7 @@ Description:
 
   > $ coinpare coins BTC ETH --exchange coinbase
     OUT
-    command = "coinpare coins --help"
+    command = "coinpare coins --help --no-color"
     out, err, status = Open3.capture3(command)
 
     expect(out).to eq(output)
