@@ -6,6 +6,7 @@ require 'tty-config'
 require 'tty-prompt'
 require 'tty-spinner'
 require 'tty-table'
+require 'timers'
 
 require_relative '../command'
 require_relative '../fetcher'
@@ -16,8 +17,10 @@ module Coinpare
       def initialize(options)
         @options = options
         @pastel = Pastel.new
+        @timers = Timers::Group.new
         @spinner = TTY::Spinner.new(":spinner Fetching data...",
                                     format: :dots, clear: true)
+        @interval = @options.fetch('watch', DEFAULT_INTERVAL).to_f
         config.set('settings', 'color', value: !@options['no-color'])
       end
 
@@ -79,19 +82,44 @@ module Coinpare
         holdings = config.fetch('holdings') { [] }
         names = holdings.map { |c| c['name'] }
 
+        if @options['watch']
+          output.print cursor.hide
+          @timers.now_and_every(@interval) do
+            display_coins(output, names, overridden_settings)
+          end
+          loop { @timers.wait }
+        else
+          display_coins(output, names, overridden_settings)
+        end
+      ensure
+        @spinner.stop
+        if @options['watch']
+          @timers.cancel
+          output.print cursor.clear_screen_down
+          output.print cursor.show
+        end
+      end
+
+      def display_coins(output, names, overridden_settings)
         response = Fetcher.fetch_prices(names.join(','),
                                         overridden_settings['base'].upcase,
                                         overridden_settings)
-
         return unless response
         table = setup_table(response['RAW'], response['DISPLAY'])
 
         @spinner.stop
 
-        output.puts banner(overridden_settings)
-        output.puts table.render(:unicode, padding: [0, 1], alignment: :right)
-      ensure
-        @spinner.stop
+        lines = banner(overridden_settings).lines.size + 1 + table.rows_size + 3
+        clear_output(output, lines) do
+          output.puts banner(overridden_settings)
+          output.puts table.render(:unicode, padding: [0, 1], alignment: :right)
+        end
+      end
+
+      def clear_output(output, lines)
+        output.print cursor.clear_screen_down if @options['watch']
+        yield if block_given?
+        output.print cursor.up(lines) if @options['watch']
       end
 
       def create_prompt(input, output)

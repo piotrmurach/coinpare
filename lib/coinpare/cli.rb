@@ -91,6 +91,8 @@ module Coinpare
                          desc: 'Display usage information'
     method_option :remove, type: :boolean,
                   desc: "Remove the given coin(s) from holdings"
+    method_option :watch, aliases: '-w', banner: 'N',
+                          desc: 'Automatically refresh data every n seconds, default 5 sec'
     def holdings(*)
       if options[:help]
         invoke :help, ['holdings']

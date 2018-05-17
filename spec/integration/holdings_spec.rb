@@ -19,6 +19,7 @@ Options:
   -e, [--exchange=NAME]          # Name of exchange
   -h, [--help], [--no-help]      # Display usage information
       [--remove], [--no-remove]  # Remove the given coin(s) from holdings
+  -w, [--watch=N]                # Automatically refresh data every n seconds, default 5 sec
       [--no-color]               # Disable colorization in output
 
 Description:
