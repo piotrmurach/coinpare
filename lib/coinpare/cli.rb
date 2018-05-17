@@ -78,16 +78,15 @@ module Coinpare
     DESC
     method_option :add, type: :boolean,
                   desc: "Add a new coin without altering any existhing holdings"
-    method_option :base, aliases: '-b', type: :string, default: "USD",
+    method_option :base, aliases: '-b', type: :string,
                          desc: 'The currency symbol to convert into',
-                         banner: 'currency'
+                         banner: 'CURRENCY'
     method_option :clear, type: :boolean, default: false,
                           desc: 'Remove all coins from your existing holdings'
     method_option :edit, type: :string, banner: 'editor',
                          desc: 'Open the holdings configuration file for editing in EDITOR, or the default editor if not specified.'
-    method_option :exchange, aliases: '-e', type: :string, default: "CCCAGG",
-                             desc: 'Name of exchange',
-                             banner: 'name'
+    method_option :exchange, aliases: '-e', type: :string,
+                             desc: 'Name of exchange', banner: 'NAME'
     method_option :help, aliases: '-h', type: :boolean,
                          desc: 'Display usage information'
     method_option :remove, type: :boolean,
