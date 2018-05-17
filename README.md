@@ -36,7 +36,7 @@ $ ruby -v
 
 If you have version of Ruby greater than `2.0.0` then you're good to go.
 
-Otherwise, please follow [Installing Ruby](https://www.ruby-lang.org/en/documentation/installation/#apt) to pick best installation method.
+Otherwise, please follow [Installing Ruby](https://www.ruby-lang.org/en/documentation/installation/#apt) to pick best installation method for your operating system.
 
 Once Ruby is installed, install the `coinpare` gem:
 
@@ -59,23 +59,25 @@ $ coinpare
 
 ## Usage
 
-To use all available commands run:
+To use all available commands, run the folling in your terminal:
 
 ```bash
 $ coinpare
 ```
 
+You will be presented with the following interface:
+
 ![Interface](https://github.com/piotrmurach/coinpare/raw/master/assets/coinpare_interface.png)
 
 ## View coins
 
-You can see top 10 trading info (price, volume, open, high, low etc) of any cyptocurrency in any other currency by running:
+You can see top 10 trading info (price, volume, open, high, low etc) of any cyptocurrency in any other currency by executing the following in your terminal:
 
 ```bash
 $ coinpare coins
 ```
 
-By default, `USD` is used as the base currency price which you can change by passing `--base` or `-b` flag:
+By default, `USD` is used as the base currency price conversion. You can change this by passing `--base` or `-b` flag:
 
 ```bash
 $ coinpare coins --base BTC
@@ -87,16 +89,16 @@ If you wish to see more currencies use `--top` flag:
 $ coinpare coins --top 30
 ```
 
-Alternatively, you can specify exactly the coins you're interested in by naming them :
+Alternatively, you can specify exactly the coins you're interested in by naming them separated by space:
 
 ```bash
 $ coinpare coins ETH BCH LTC --base btc
 ```
 
-You can also change the default exchange:
+You can also change the default exchange `CCCAGG` using the `--exchange` or `-e` flag:
 
 ```bash
-$ coinpare coins BTC ETH --exchnage coinbase
+$ coinpare coins BTC ETH --exchange coinbase
 ```
 
 See [view markets](#view-markets) for more information on available exchanges.
@@ -120,7 +122,7 @@ By default 5 seconds interval is used which you can change by providing a new va
 $ coinpare coins --watch 20   # every 20 seconds
 ```
 
-To finish watching changes hold down `Ctrl+C` key combination.
+To finish watching for changes hold down `Ctrl+C` key combination.
 
 ## View markets
 
@@ -159,7 +161,7 @@ $ coinpare markets --watch
 $ coinpare markets -w
 ```
 
-To finish watching changes hold down `Ctrl+C` key combination.
+To finish watching for changes hold down `Ctrl+C` key combination.
 
 ## Create portfolio
 
@@ -209,7 +211,7 @@ color = true
 exchange = "CCCAGG"
 ```
 
-Once configured, any subsequent execution of `holdings` command will display current prices and totals. For example, the configuration file will result in:
+Once configured, any subsequent execution of `holdings` command will display current prices and totals. For example, the beforementioned configuration file may produce the following result:
 
 ![ViewHoldings](https://github.com/piotrmurach/coinpare/raw/master/assets/coinpare_holdings.png)
 
@@ -220,7 +222,7 @@ $ coinpare holdings --watch
 $ coinpare holdings -w
 ```
 
-To finish watching changes hold down `Ctrl+C` key combination.
+To finish watching for changes hold down `Ctrl+C` key combination.
 
 ### Add/remove coins
 
@@ -246,6 +248,11 @@ You will be presented with a multi select menu that contains all current holding
 
 ![RemoveHoldings](https://github.com/piotrmurach/coinpare/raw/master/assets/coinpare_holdings_remove.png)
 
+Finally, if you wish to clear all your holdings and start again use `--clear` flag:
+
+```bash
+$ coinpare holdings --clear
+```
 
 ## Development
 
@@ -255,11 +262,11 @@ To install this gem onto your local machine, run `bundle exec rake install`. To 
 
 ## Contributing
 
-Bug reports and pull requests are welcome on GitHub at https://github.com/[USERNAME]/coinpare. This project is intended to be a safe, welcoming space for collaboration, and contributors are expected to adhere to the [Contributor Covenant](http://contributor-covenant.org) code of conduct.
+Bug reports and pull requests are welcome on GitHub at https://github.com/piotrmurach/coinpare. This project is intended to be a safe, welcoming space for collaboration, and contributors are expected to adhere to the [Contributor Covenant](http://contributor-covenant.org) code of conduct.
 
 ## Code of Conduct
 
-Everyone interacting in the Coinpare project’s codebases, issue trackers, chat rooms and mailing lists is expected to follow the [code of conduct](https://github.com/[USERNAME]/coinpare/blob/master/CODE_OF_CONDUCT.md).
+Everyone interacting in the Coinpare project’s codebases, issue trackers, chat rooms and mailing lists is expected to follow the [code of conduct](https://github.com/piotrmurach/coinpare/blob/master/CODE_OF_CONDUCT.md).
 
 ## Credits
 
