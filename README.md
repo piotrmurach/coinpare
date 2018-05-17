@@ -1,5 +1,5 @@
 <div align="center">
-  <img width="276" src="https://cdn.rawgit.com/piotrmurach/coinpare/master/assets/coinpare_logo_stacked.png" alt="coinpare logo" />
+  <img width="207" src="https://cdn.rawgit.com/piotrmurach/coinpare/master/assets/coinpare_logo_stacked.png" alt="coinpare logo" />
 </div>
 <br/>
 
