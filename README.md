@@ -18,7 +18,7 @@
 [coverage]: https://codeclimate.com/github/piotrmurach/coinpare/test_coverage
 [inchpages]: http://inch-ci.org/github/piotrmurach/coinpare
 
-> Compare cryptocurrency trading data across multiple exchanges and blockchains in the comfort of your terminal window.
+> Compare cryptocurrency trading data across multiple exchanges and blockchains in the comfort of your terminal
 
 A screenshot is worth a thousand words:
 
@@ -120,6 +120,8 @@ By default 5 seconds interval is used which you can change by providing a new va
 $ coinpare coins --watch 20   # every 20 seconds
 ```
 
+To finish watching changes hold down `Ctrl+C` key combination.
+
 ## View markets
 
 You can get top markets by volume for any currency pair. By default 10 top exchanges for the BTC and USD pair by their total volume across all markets in the last 24 hours are displayed.
@@ -156,6 +158,8 @@ To watch for changes use the `--watch` or `-w` flag:
 $ coinpare markets --watch
 $ coinpare markets -w
 ```
+
+To finish watching changes hold down `Ctrl+C` key combination.
 
 ## Create portfolio
 
@@ -209,6 +213,15 @@ Once configured, any subsequent execution of `holdings` command will display cur
 
 ![ViewHoldings](https://github.com/piotrmurach/coinpare/raw/master/assets/coinpare_holdings.png)
 
+Similar to other commands, if you want to auto refresh data use `--watch` or `-w` flag:
+
+```bash
+$ coinpare holdings --watch
+$ coinpare holdings -w
+```
+
+To finish watching changes hold down `Ctrl+C` key combination.
+
 ### Add/remove coins
 
 **Coinpare** allows you to easily add and remove individual coins to and from your holdings portfolio.
@@ -219,7 +232,7 @@ To add a coin to your current portfolio use `--add` flag
 $ coinpare holdings --add
 ```
 
-For example, the following screenshot shows adding a 'ETH' coin:
+For example, the following screenshot shows adding an `ETH` coin:
 
 ![AddHoldings](https://github.com/piotrmurach/coinpare/raw/master/assets/coinpare_holdings_add.png)
 
@@ -229,7 +242,7 @@ To remove one or more coins from your current portfolio use `--remove` flag:
 $ coinpare holdings --remove
 ```
 
-You will be presented with a menu similar to the one below:
+You will be presented with a multi select menu that contains all current holdings similar to the one below:
 
 ![RemoveHoldings](https://github.com/piotrmurach/coinpare/raw/master/assets/coinpare_holdings_remove.png)
 
