@@ -18,9 +18,7 @@ module Coinpare
         @pastel = Pastel.new
         @spinner = TTY::Spinner.new(":spinner Fetching data...",
                                     format: :dots, clear: true)
-        config.set('settings', 'base', value: @options['base'])
         config.set('settings', 'color', value: !@options['no-color'])
-        config.set('settings', 'exchange', value: @options['exchange'])
       end
 
       def execute(input: $stdin, output: $stdout)
@@ -72,15 +70,17 @@ module Coinpare
           exit
         end
 
+        @spinner.auto_spin
         settings = config.fetch('settings')
         # command options take precedence over config settings
-        overridden_settings = settings.merge(@options)
+        overridden_settings = {}
+        overridden_settings['exchange'] = @options.fetch('exchange', settings.fetch('exchange'))
+        overridden_settings['base']     = @options.fetch('base', settings.fetch('base'))
         holdings = config.fetch('holdings') { [] }
         names = holdings.map { |c| c['name'] }
 
-        @spinner.auto_spin
         response = Fetcher.fetch_prices(names.join(','),
-                                        settings['base'],
+                                        overridden_settings['base'].upcase,
                                         overridden_settings)
 
         return unless response
@@ -153,18 +153,16 @@ module Coinpare
 
         prompt = create_prompt(input, output)
         context = self
-        base = @options['base']
-        exchange = @options['exchange']
-
         data = prompt.collect do
           key('settings') do
             key('base').ask('What base currency to convert holdings to?') do |q|
-              q.default base
+              q.default "USD"
               q.convert ->(b) { b.upcase }
               q.validate(/\w{3}/, 'Currency code needs to be 3 chars long')
             end
             key('exchange').ask('What exchange would you like to use?') do |q|
-              q.default exchange
+              q.default "CCCAGG"
+              q.required true
             end
           end
 
@@ -183,7 +181,7 @@ module Coinpare
       end
 
       def setup_table(raw_data, display_data)
-        settings = config.fetch('settings')
+        base = @options.fetch('base', config.fetch('settings', 'base')).upcase
         total_buy = 0
         total = 0
         to_symbol = nil
@@ -199,8 +197,8 @@ module Coinpare
         ])
 
         config.fetch('holdings').each do |coin|
-          coin_data = raw_data[coin['name']][settings['base']]
-          coin_display_data = display_data[coin['name']][settings['base']]
+          coin_data = raw_data[coin['name']][base]
+          coin_display_data = display_data[coin['name']][base]
           past_price = coin['amount'] * coin['price']
           curr_price = coin['amount'] * coin_data['PRICE']
           to_symbol = coin_display_data['TOSYMBOL']
