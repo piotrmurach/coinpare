@@ -25,6 +25,7 @@ rvm:
   - jruby-head
 matrix:
   allow_failures:
+    - rvm: 2.5.1
     - rvm: ruby-head
     - rvm: jruby-9.1.1.0
     - rvm: jruby-head
