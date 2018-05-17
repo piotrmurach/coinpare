@@ -11,15 +11,15 @@ Usage:
   coinpare coins NAMES...
 
 Options:
-  -b, [--base=currency]      # The currency symbol to convert into
+  -b, [--base=CURRENCY]      # The currency symbol to convert into
                              # Default: USD
   -c, [--columns=0 1 2]      # Specify columns to display
   -e, [--exchange=name]      # Name of exchange
                              # Default: CCCAGG
   -h, [--help], [--no-help]  # Display usage information
-  -t, [--top=n]              # The number of top coins by total volume accross all markets in 24 hours
+  -t, [--top=N]              # The number of top coins by total volume accross all markets in 24 hours
                              # Default: 10
-  -w, [--watch=n]            # Automatically refresh data every n seconds, default 5 sec
+  -w, [--watch=N]            # Automatically refresh data every n seconds, default 5 sec
       [--no-color]           # Disable colorization in output
 
 Description:

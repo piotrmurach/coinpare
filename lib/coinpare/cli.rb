@@ -41,7 +41,7 @@ module Coinpare
     DESC
     method_option :base, aliases: '-b', type: :string, default: "USD",
                          desc: 'The currency symbol to convert into',
-                         banner: 'currency'
+                         banner: 'CURRENCY'
     method_option :columns, aliases: '-c', type: :array,
                             desc: 'Specify columns to display',
                             banner: '0 1 2'
@@ -50,9 +50,9 @@ module Coinpare
                              banner: 'name'
     method_option :help, aliases: '-h', type: :boolean,
                          desc: 'Display usage information'
-    method_option :top, aliases: '-t', type: :numeric, default: 10, banner: 'n',
+    method_option :top, aliases: '-t', type: :numeric, default: 10, banner: 'N',
                         desc: "The number of top coins by total volume accross all markets in 24 hours"
-    method_option :watch, aliases: '-w', banner: 'n',
+    method_option :watch, aliases: '-w', banner: 'N',
                           desc: 'Automatically refresh data every n seconds, default 5 sec'
     def coins(*names)
       if options[:help]
@@ -118,7 +118,7 @@ module Coinpare
     DESC
     method_option :base, aliases: '-b', type: :string, default: "USD",
                          desc: 'The currency symbol to convert into',
-                         banner: 'currency'
+                         banner: 'CURRENCY'
     method_option :columns, aliases: '-c', type: :array,
                             desc: 'Specify columns to display',
                             banner: '0 1 2'
@@ -126,7 +126,7 @@ module Coinpare
                          desc: 'Display usage information'
     method_option :top, aliases: '-t', type: :numeric, default: 10,
                         desc: "The number of top exchanges by total volume in 24 hours"
-    method_option :watch, aliases: '-w', banner: 'n',
+    method_option :watch, aliases: '-w', banner: 'N',
                           desc: 'Automatically refresh data every n seconds, default 5 sec'
     def markets(name = 'BTC')
       if options[:help]
