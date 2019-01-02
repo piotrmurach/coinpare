@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 RSpec.describe "`coinpare markets` command", type: :cli do
   it "executes `markets --help` command successfully" do
     output = `coinpare markets --help --no-color`
@@ -24,7 +26,7 @@ Options:
 Description:
   Get top markets by volume for a currency pair.
 
-  By default 10 top markets by their total volume across all markets in the last 
+  By default 10 top markets by their total volume across all markets in the last
   24 hours.
 
   Example:

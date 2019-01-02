@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'coinpare/commands/markets'
 
 RSpec.describe Coinpare::Commands::Markets do

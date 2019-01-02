@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'coinpare/commands/holdings'
 
 RSpec.describe Coinpare::Commands::Holdings, type: :cli do

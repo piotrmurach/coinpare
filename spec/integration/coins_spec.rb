@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 RSpec.describe "`coinpare coins` command", type: :cli do
   it "displays usage info" do
     output = <<-OUT
@@ -23,11 +25,11 @@ Options:
       [--no-color]           # Disable colorization in output
 
 Description:
-  Get all the current trading info (price, vol, open, high, low etc) of any list 
+  Get all the current trading info (price, vol, open, high, low etc) of any list
   of cryptocurrencies in any other currency that you need.
 
-  By default 10 top coins by their total volume across all markets in the last 
-  24 hours.
+  By default 10 top coins by their total volume across all markets in the last 24
+  hours.
 
   Example:
 

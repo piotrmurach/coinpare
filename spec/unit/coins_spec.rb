@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'coinpare/commands/coins'
 
 RSpec.describe Coinpare::Commands::Coins, 'coins command' do
