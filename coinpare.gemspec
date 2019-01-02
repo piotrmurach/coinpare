@@ -13,11 +13,11 @@ Gem::Specification.new do |spec|
   spec.description   = %q{Compare cryptocurrency trading data across multiple exchanges and blockchains.}
   spec.homepage      = "https://github.com/piotrmurach/coinpare"
 
-  spec.files         = `git ls-files -z`.split("\x0").reject do |f|
-    f.match(%r{^(test|spec|features|assets)/})
-  end
+  spec.files         = Dir['{lib,spec}/**/*']
+  spec.files        += Dir['bin/*', 'coinpare.gemspec']
+  spec.files        += Dir['README.md', 'CHANGELOG.md', 'LICENSE.txt', 'Rakefile']
   spec.bindir        = "exe"
-  spec.executables   = spec.files.grep(%r{^exe/}) { |f| File.basename(f) }
+  spec.executables   = "coinpare"
   spec.require_paths = ["lib"]
 
   spec.add_dependency "tty-color", "~> 0.4"
