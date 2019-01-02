@@ -135,18 +135,18 @@ module Coinpare
       def ask_coin
         -> (prompt) do
           key('name').ask('What coin do you own?') do |q|
-            q.required true
             q.default 'BTC'
+            q.required(true, 'You need to provide a coin')
             q.validate(/\w{2,}/, 'Currency can only be chars.')
             q.convert ->(coin) { coin.upcase }
           end
           key('amount').ask('What amount?') do |q|
-            q.required true
+            q.required(true, 'You need to provide an amount')
             q.validate(/[\d.]+/, 'Invalid amount provided')
             q.convert ->(am) { am.to_f }
           end
           key('price').ask('At what price per coin?') do |q|
-            q.required true
+            q.required(true, 'You need to provide a price')
             q.validate(/[\d.]+/, 'Invalid prince provided')
             q.convert ->(p) { p.to_f }
           end
