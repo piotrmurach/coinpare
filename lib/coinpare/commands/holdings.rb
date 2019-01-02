@@ -6,6 +6,7 @@ require 'tty-config'
 require 'tty-prompt'
 require 'tty-spinner'
 require 'tty-table'
+require 'tty-pie'
 require 'timers'
 
 require_relative '../command'
@@ -106,13 +107,19 @@ module Coinpare
                                         overridden_settings)
         return unless response
         table = setup_table(response['RAW'], response['DISPLAY'])
+        pie = create_pie_chart
 
         @spinner.stop
 
-        lines = banner(overridden_settings).lines.size + 1 + table.rows_size + 3
+        lines = banner(overridden_settings).lines.size + 1 +
+          (@options['pie'] ? pie.radius * 2 : table.rows_size + 3)
         clear_output(output, lines) do
           output.puts banner(overridden_settings)
-          output.puts table.render(:unicode, padding: [0, 1], alignment: :right)
+          if @options['pie']
+            output.puts pie.draw
+          else
+            output.puts table.render(:unicode, padding: [0, 1], alignment: :right)
+          end
         end
       end
 
@@ -208,6 +215,21 @@ module Coinpare
         data
       end
 
+      def create_pie_chart
+        colors = %i[cyan magenta green yellow blue]
+        pie = TTY::Pie.new
+
+        config.fetch('holdings').each_with_index do |coin, i|
+          coin_details = {
+            name: coin['name'],
+            value: coin['amount'].to_i,
+            color: colors[i % colors.size]
+          }
+          pie << coin_details
+        end
+        pie
+      end
+
       def setup_table(raw_data, display_data)
         base = @options.fetch('base', config.fetch('settings', 'base')).upcase
         total_buy = 0
@@ -252,7 +274,7 @@ module Coinpare
         arrow = pick_arrow(total_change)
 
         table << [
-          { value: add_color('ALL', :cyan), alignment: :left}, '-', '-',
+          { value: add_color('ALL', :cyan), alignment: :left }, '-', '-',
           "#{to_symbol} #{number_to_currency(round_to(total_buy))}", '-',
           add_color("#{to_symbol} #{number_to_currency(round_to(total))}", pick_color(total_change)),
           add_color("#{arrow} #{to_symbol} #{number_to_currency(round_to(total_change))}", pick_color(total_change)),

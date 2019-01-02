@@ -89,6 +89,8 @@ module Coinpare
                              desc: 'Name of exchange', banner: 'NAME'
     method_option :help, aliases: '-h', type: :boolean,
                          desc: 'Display usage information'
+    method_option :pie, aliases: '-p', type: :boolean,
+                        desc: 'Display data in a pie chart format'
     method_option :remove, type: :boolean,
                   desc: "Remove the given coin(s) from holdings"
     method_option :watch, aliases: '-w', banner: 'N',
