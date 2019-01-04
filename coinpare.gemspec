@@ -20,6 +20,8 @@ Gem::Specification.new do |spec|
   spec.executables   = "coinpare"
   spec.require_paths = ["lib"]
 
+  spec.required_ruby_version = '>= 2.0.0'
+
   spec.add_dependency "tty-color", "~> 0.4"
   spec.add_dependency "tty-config", "~> 0.3.0"
   spec.add_dependency "tty-cursor", "~> 0.6.0"
