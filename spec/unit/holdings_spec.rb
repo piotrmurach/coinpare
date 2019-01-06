@@ -238,4 +238,44 @@ Run "$ coinpare holdings" to setup new altfolio.
 
     expect(output.string).to eq(expected_output)
   end
+
+  it "displays holdings in pie chart" do
+    output = StringIO.new
+    options = {
+      "pie" => 2,
+      "radius" => 5,
+      "base"=>"USD",
+      "exchange"=>"CCCAGG",
+      "no-color"=>true
+    }
+    config_path = fixtures_path('coinpare.toml')
+    ::FileUtils.cp(config_path, tmp_path)
+    prices_path = fixtures_path('pricemultifull_top10.json')
+
+    stub_request(:get, "https://min-api.cryptocompare.com/data/pricemultifull")
+      .with(query: {"fsyms" => "BTC,ETH,TRX",
+                    "tsyms" => "USD",
+                    "e" => "CCCAGG",
+                    "tryConversion" => "true"})
+      .to_return(body: File.new(prices_path), status: 200)
+
+    command = Coinpare::Commands::Holdings.new(options)
+
+    command.config.location_paths.clear
+    command.config.prepend_path(tmp_path)
+
+    command.execute(output: output)
+
+    expected_output = <<-OUT
+Exchange CCCAGG  Currency USD  Time 01 April 2018 at 12:30:54 PM UTC
+
+     •••         • BTC 0.05%
+   •••••••
+  •••••••••      • ETH 0.20%
+   •••••••
+     •••         • TRX 99.75%
+    OUT
+
+    expect(output.string).to include(expected_output)
+  end
 end

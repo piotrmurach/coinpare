@@ -216,14 +216,18 @@ module Coinpare
       end
 
       def create_pie_chart
-        colors = %i[cyan magenta green yellow blue]
-        pie = TTY::Pie.new
+        colors = %i[cyan magenta green yellow blue red]
+        radius = @options['pie'].to_i > 0 ? @options['pie'].to_i : 10
+        pie = TTY::Pie.new(
+          left: 2,
+          colors: !@options['no-color'] && colors,
+          radius: radius
+        )
 
-        config.fetch('holdings').each_with_index do |coin, i|
+        config.fetch('holdings').each do |coin|
           coin_details = {
             name: coin['name'],
             value: coin['amount'].to_i,
-            color: colors[i % colors.size]
           }
           pie << coin_details
         end
