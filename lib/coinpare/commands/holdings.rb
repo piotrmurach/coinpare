@@ -116,7 +116,7 @@ module Coinpare
         clear_output(output, lines) do
           output.puts banner(overridden_settings)
           if @options['pie']
-            output.puts pie.draw
+            output.puts pie.render
           else
             output.puts table.render(:unicode, padding: [0, 1], alignment: :right)
           end
