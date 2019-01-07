@@ -269,13 +269,12 @@ Run "$ coinpare holdings" to setup new altfolio.
     expected_output = <<-OUT
 Exchange CCCAGG  Currency USD  Time 01 April 2018 at 12:30:54 PM UTC
 
-     •••         • BTC 0.05%
+     •••         • BTC 80.39%
    •••••••
-  •••••••••      • ETH 0.20%
+  •••••••••      • ETH 19.29%
    •••••••
-     •••         • TRX 99.75%
+     •••         • TRX 0.32%
     OUT
-
     expect(output.string).to include(expected_output)
   end
 end

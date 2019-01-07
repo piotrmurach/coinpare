@@ -227,7 +227,7 @@ module Coinpare
         config.fetch('holdings').each do |coin|
           coin_details = {
             name: coin['name'],
-            value: coin['amount'].to_i,
+            value: coin['amount'] * coin['price']
           }
           pie << coin_details
         end
