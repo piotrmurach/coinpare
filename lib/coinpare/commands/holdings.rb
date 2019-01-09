@@ -238,6 +238,7 @@ module Coinpare
           colors: !@options['no-color'] && colors,
           radius: radius,
           legend: {
+            left: 2,
             format: "%<label>s %<name>s #{to_symbol}%<currency>s (%<percent>.0f%%)",
             precision: 2
           }
