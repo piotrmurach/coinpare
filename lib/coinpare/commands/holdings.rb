@@ -107,7 +107,7 @@ module Coinpare
                                         overridden_settings)
         return unless response
         table = setup_table(response['RAW'], response['DISPLAY'])
-        pie = create_pie_chart
+        pie = create_pie_chart(response['RAW'], response['DISPLAY'])
 
         @spinner.stop
 
@@ -215,23 +215,33 @@ module Coinpare
         data
       end
 
-      def create_pie_chart
+      def create_pie_chart(raw_data, display_data)
         colors = %i[cyan magenta green yellow blue red]
         radius = @options['pie'].to_i > 0 ? @options['pie'].to_i : 10
-        pie = TTY::Pie.new(
-          left: 2,
-          colors: !@options['no-color'] && colors,
-          radius: radius
-        )
+        base = @options.fetch('base', config.fetch('settings', 'base')).upcase
+        to_symbol = nil
+        data = []
 
         config.fetch('holdings').each do |coin|
+          coin_data = raw_data[coin['name']][base]
+          to_symbol = display_data[coin['name']][base]['TOSYMBOL']
           coin_details = {
             name: coin['name'],
-            value: coin['amount'] * coin['price']
+            value: coin['amount'] * coin_data['PRICE']
           }
-          pie << coin_details
+          data << coin_details
         end
-        pie
+
+        TTY::Pie.new(
+          data: data,
+          left: 2,
+          colors: !@options['no-color'] && colors,
+          radius: radius,
+          legend: {
+            format: "%<label>s %<name>s #{to_symbol}%<currency>s (%<percent>.0f%%)",
+            precision: 2
+          }
+        )
       end
 
       def setup_table(raw_data, display_data)
@@ -239,6 +249,7 @@ module Coinpare
         total_buy = 0
         total = 0
         to_symbol = nil
+
         table = TTY::Table.new(header: [
           { value: 'Coin', alignment: :left },
           'Amount',
