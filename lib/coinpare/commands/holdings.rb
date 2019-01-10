@@ -15,6 +15,8 @@ require_relative '../fetcher'
 module Coinpare
   module Commands
     class Holdings < Coinpare::Command
+      DEFAULT_PIE_RADIUS = 6
+
       def initialize(options)
         @options = options
         @pastel = Pastel.new
@@ -106,17 +108,19 @@ module Coinpare
                                         overridden_settings['base'].upcase,
                                         overridden_settings)
         return unless response
-        table = setup_table(response['RAW'], response['DISPLAY'])
-        pie = create_pie_chart(response['RAW'], response['DISPLAY'])
+        table = if @options['pie']
+                  setup_table_with_pies(response['RAW'], response['DISPLAY'])
+                else
+                  setup_table(response['RAW'], response['DISPLAY'])
+                end
 
         @spinner.stop
 
-        lines = banner(overridden_settings).lines.size + 1 +
-          (@options['pie'] ? pie.radius * 2 : table.rows_size + 3)
+        lines = banner(overridden_settings).lines.size + 1 + (table.rows_size + 3)
         clear_output(output, lines) do
           output.puts banner(overridden_settings)
           if @options['pie']
-            output.puts pie.render
+            output.puts table.render(:unicode, padding: [0, 2])
           else
             output.puts table.render(:unicode, padding: [0, 1], alignment: :right)
           end
@@ -215,26 +219,25 @@ module Coinpare
         data
       end
 
-      def create_pie_chart(raw_data, display_data)
-        colors = %i[cyan magenta green yellow blue red]
-        radius = @options['pie'].to_i > 0 ? @options['pie'].to_i : 10
-        base = @options.fetch('base', config.fetch('settings', 'base')).upcase
+      def create_pie_charts(raw_data, display_data)
+        colors = %i[yellow blue green cyan magenta red]
+        radius = @options['pie'].to_i > 0 ? @options['pie'].to_i : DEFAULT_PIE_RADIUS
+        base   = @options.fetch('base', config.fetch('settings', 'base')).upcase
         to_symbol = nil
-        data = []
+        past_data = []
+        curr_data = []
 
         config.fetch('holdings').each do |coin|
           coin_data = raw_data[coin['name']][base]
           to_symbol = display_data[coin['name']][base]['TOSYMBOL']
-          coin_details = {
-            name: coin['name'],
-            value: coin['amount'] * coin_data['PRICE']
-          }
-          data << coin_details
+          past_price = coin['amount'] * coin['price']
+          curr_price = coin['amount'] * coin_data['PRICE']
+
+          past_data << { name: coin['name'], value: past_price }
+          curr_data << { name: coin['name'], value: curr_price }
         end
 
-        TTY::Pie.new(
-          data: data,
-          left: 2,
+        options = {
           colors: !@options['no-color'] && colors,
           radius: radius,
           legend: {
@@ -242,7 +245,37 @@ module Coinpare
             format: "%<label>s %<name>s #{to_symbol}%<currency>s (%<percent>.0f%%)",
             precision: 2
           }
+        }
+
+        [
+          TTY::Pie.new(options.merge(data: past_data)),
+          TTY::Pie.new(options.merge(data: curr_data)),
+          to_symbol
+        ]
+      end
+
+      def setup_table_with_pies(raw_data, display_data)
+        past_pie, curr_pie, to_symbol = *create_pie_charts(raw_data, display_data)
+
+        total_change = curr_pie.total - past_pie.total
+        arrow = pick_arrow(total_change)
+
+        header_past = "Total Price (#{to_symbol} #{number_to_currency(round_to(past_pie.total))})"
+        header_curr = [
+          "Total Current Price (#{to_symbol}#{number_to_currency(round_to(curr_pie.total))}) ",
+          add_color("#{arrow} #{to_symbol}#{number_to_currency(round_to(total_change))}", pick_color(total_change)),
+        ].join
+
+        table = TTY::Table.new(
+          header: [
+            {value: header_past, alignment: :center},
+            {value: header_curr, alignment: :center}
+          ]
         )
+        past_pie.to_s.split("\n").zip(curr_pie.to_s.split("\n")).each do |past_part, curr_part|
+          table << [past_part, curr_part]
+        end
+        table
       end
 
       def setup_table(raw_data, display_data)
