@@ -13,7 +13,7 @@ Gem::Specification.new do |spec|
   spec.description   = %q{Compare cryptocurrency trading data across multiple exchanges and blockchains.}
   spec.homepage      = "https://github.com/piotrmurach/coinpare"
 
-  spec.files         = Dir['{lib,spec}/**/*']
+  spec.files         = Dir['lib/**/*']
   spec.files        += Dir['bin/*', 'coinpare.gemspec']
   spec.files        += Dir['README.md', 'CHANGELOG.md', 'LICENSE.txt', 'Rakefile']
   spec.bindir        = "exe"
