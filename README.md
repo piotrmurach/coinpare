@@ -1,5 +1,5 @@
 <div align="center">
-  <img width="207" src="https://cdn.rawgit.com/piotrmurach/coinpare/master/assets/coinpare_logo_stacked.png" alt="coinpare logo" />
+  <img width="207" src="https://github.com/piotrmurach/coinpare/raw/master/assets/coinpare_logo_stacked.png" alt="coinpare logo" />
 </div>
 <br/>
 
@@ -7,6 +7,7 @@
 
 [![Gem Version](https://badge.fury.io/rb/coinpare.svg)][gem]
 [![Build Status](https://secure.travis-ci.org/piotrmurach/coinpare.svg?branch=master)][travis]
+[![Build status](https://ci.appveyor.com/api/projects/status/dsd3cone86it12pi?svg=true)][appveyor]
 [![Maintainability](https://api.codeclimate.com/v1/badges/1072406ba7e951e355e4/maintainability)][codeclimate]
 [![Test Coverage](https://api.codeclimate.com/v1/badges/1072406ba7e951e355e4/test_coverage)][coverage]
 [![Inline docs](http://inch-ci.org/github/piotrmurach/coinpare.svg?branch=master)][inchpages]
@@ -14,6 +15,7 @@
 [gitter]: https://gitter.im/piotrmurach/coinpare
 [gem]: http://badge.fury.io/rb/coinpare
 [travis]: http://travis-ci.org/piotrmurach/coinpare
+[appveyor]: https://ci.appveyor.com/project/piotrmurach/coinpare
 [codeclimate]: https://codeclimate.com/github/piotrmurach/coinpare/maintainability
 [coverage]: https://codeclimate.com/github/piotrmurach/coinpare/test_coverage
 [inchpages]: http://inch-ci.org/github/piotrmurach/coinpare
@@ -52,25 +54,25 @@ $ coinpare
 
 ## Features
 
-* Compare chosen or top coins trading info(price, vol, open, high, low etc)
+* Compare purchased or top coins trading info(price, vol, open, high, low etc)
 * Compare top markets by a trading coin pair
-* Create your custom portfolio and track your holdings
+* Create custom portfolio and track your holdings
+* Display portfolio in a table or pie chart
 * Auto refresh cryptocurrencies info with a configurable time interval
 
-
 ## Contents
-
 
 * [1. Usage](#1-usage)
 * [2. View coins](#2-view-coins)
 * [3. View markets](#3-view-markets)
 * [4. Create portfolio](#4-create-portfolio)
-  * [4.1  Edit coins](#41-edit-coins)
-  * [4.2  Add/remove coins](#42-addremove-coins)
+  * [4.1 Edit coins](#41-edit-coins)
+  * [4.2 Add/remove coins](#42-addremove-coins)
+  * [4.3 Pie charts](#43-pie-charts)
 
 ## 1. Usage
 
-To use all available commands, run the folling in your terminal:
+To use all available commands, run the following in your terminal:
 
 ```bash
 $ coinpare
@@ -112,7 +114,7 @@ You can also change the default exchange `CCCAGG` using the `--exchange` or `-e`
 $ coinpare coins BTC ETH --exchange coinbase
 ```
 
-See [view markets](#view-markets) for more information on available exchanges.
+See [view markets](#3view-markets) for more information on available exchanges.
 
 Finally, if you want to auto refresh data use `--watch` or `-w` flag:
 
@@ -224,7 +226,7 @@ color = true
 exchange = "CCCAGG"
 ```
 
-Once configured, any subsequent execution of `holdings` command will display current prices and totals. For example, the beforementioned configuration file may produce the following result:
+Once configured, any subsequent execution of `holdings` command will display current prices and totals. For example, the before mentioned configuration file may produce the following result:
 
 ![ViewHoldings](https://github.com/piotrmurach/coinpare/raw/master/assets/coinpare_holdings.png)
 
@@ -266,6 +268,19 @@ Finally, if you wish to clear all your holdings and start again use `--clear` fl
 ```bash
 $ coinpare holdings --clear
 ```
+
+### 4.3 Pie charts
+
+By default holdings are displayed in a table format. Alternatively, you can view your portfolio in a pie chart
+using the `--pie` or `-p` option which optionally accepts pie chart radius value:
+
+```bash
+$ coinpare holdings --pie
+```
+
+An example output:
+
+![HoldingsAsPieChart](https://github.com/piotrmurach/coinpare/raw/master/coinpare_holdings_pie_charts.png)
 
 ## Development
 
