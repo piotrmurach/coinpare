@@ -9,6 +9,7 @@
 ### Changed
 * Change gemspec to update runtime dependencies, load dependent files directly and require Ruby >= 2.0
 * Change to provide error messages for required inputs when creating holdings
+* Change coins & markets commands to use system pager and page only when content exceeds screen height
 
 ## [v0.1.0] - 2018-05-17
 
