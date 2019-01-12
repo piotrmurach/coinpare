@@ -1,9 +1,10 @@
 # Change log
 
-## [v0.2.0] - 2019-01-xx
+## [v0.2.0] - 2019-01-12
 
 ### Added
-* Add ability to display holdings in pie chart format
+* Add ability to display total purchased and current holdings in pie chart format
+* Add vim key navigation bindings for menu selection
 
 ### Changed
 * Change gemspec to update runtime dependencies, load dependent files directly and require Ruby >= 2.0
