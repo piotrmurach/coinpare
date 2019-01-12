@@ -2,6 +2,8 @@
 install:
   - SET PATH=C:\Ruby%ruby_version%\bin;%PATH%
   - chcp 65001
+  - SET LC_ALL=en_GB.UTF-8
+  - SET LANG=en_GB.UTF-8
   - ruby --version
   - gem --version
   - bundle install
