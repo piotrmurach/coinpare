@@ -114,7 +114,7 @@ You can also change the default exchange `CCCAGG` using the `--exchange` or `-e`
 $ coinpare coins BTC ETH --exchange coinbase
 ```
 
-See [view markets](#3view-markets) for more information on available exchanges.
+See [view markets](#3-view-markets) for more information on available exchanges.
 
 Finally, if you want to auto refresh data use `--watch` or `-w` flag:
 
@@ -280,7 +280,7 @@ $ coinpare holdings --pie
 
 An example output:
 
-![HoldingsAsPieChart](https://github.com/piotrmurach/coinpare/raw/master/coinpare_holdings_pie_charts.png)
+![HoldingsAsPieChart](https://github.com/piotrmurach/coinpare/raw/master/assets/coinpare_holdings_pie_charts.png)
 
 ## Development
 
