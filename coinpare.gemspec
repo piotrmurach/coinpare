@@ -28,7 +28,7 @@ Gem::Specification.new do |spec|
   spec.add_dependency "tty-editor", "~> 0.5"
   spec.add_dependency "tty-font", "~> 0.3"
   spec.add_dependency "tty-pager", "~> 0.12"
-  #spec.add_dependency "tty-pie", "~> 0.1.0"
+  spec.add_dependency "tty-pie", "~> 0.2.0"
   spec.add_dependency "tty-prompt", "~> 0.18"
   spec.add_dependency "tty-spinner", "~> 0.9"
   spec.add_dependency "tty-table", "~> 0.10.0"
