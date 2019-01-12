@@ -22,7 +22,8 @@ module Coinpare
       end
 
       def execute(input: $stdin, output: $stdout)
-        pager = TTY::Pager::BasicPager.new(output: output)
+        test = ENV['TTY_TEST'] == 'true'
+        pager = TTY::Pager::BasicPager.new(output: output, enabled: !test)
         @spinner.auto_spin
 
         if @options['watch']
