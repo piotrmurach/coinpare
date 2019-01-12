@@ -42,7 +42,7 @@ Exchange CCCAGG  Currency USD  Time 01 April 2018 at 12:30:54 PM UTC
     expect(output.string).to eq(expected_output)
   end
 
-  it "prints two coins BTC, ETH using GBP as base currency" do
+  it "prints two coins BTC, ETH using GBP as base currency", unless: RSpec::Support::OS.windows? do
     output = StringIO.new
     prices_path = fixtures_path('pricemultifull_gbp.json')
     options = {"base"=>"GBP", "exchange"=>"CCCAGG", "limit"=>10, "no-color"=>true}

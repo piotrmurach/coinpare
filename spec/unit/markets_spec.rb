@@ -51,7 +51,7 @@ Coin BTC  Base Currency USD  Time 01 April 2018 at 12:30:54 PM UTC
     expect(output.string).to eq(expected_output)
   end
 
-  it "prints base currency symbols" do
+  it "prints base currency symbols", unless: RSpec::Support::OS.windows? do
     output = StringIO.new
     prices_path = fixtures_path('pricemultifull_btc_ltc.json')
     exchanges_path = fixtures_path('exchangesfull_ltc_base.json')
