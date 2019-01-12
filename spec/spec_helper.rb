@@ -15,13 +15,6 @@ require 'timecop'
 ENV['THOR_COLUMNS'] = '80'
 ENV['TTY_TEST'] = 'true'
 
-puts "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
-puts "LC_ALL: #{ENV['LC_ALL']}"
-puts "LC_CTYPE: #{ENV['LC_CTYPE']}"
-puts "LANG: #{ENV['LANG']}"
-puts "△"
-puts "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
-
 module TestHelpers
   module Paths
     def gem_root
