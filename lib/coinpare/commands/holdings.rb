@@ -28,7 +28,7 @@ module Coinpare
       end
 
       def execute(input: $stdin, output: $stdout)
-        config_saved = config.persisted?
+        config_saved = config.exist?
         if config_saved && @options['edit']
           editor.open(config.source_file)
           return
