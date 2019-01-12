@@ -247,7 +247,7 @@ module Coinpare
           radius: radius,
           legend: {
             left: 2,
-            format: "%<label>s %<name>s #{to_symbol}%<currency>s (%<percent>.0f%%)",
+            format: "%<label>s %<name>s #{to_symbol} %<currency>s (%<percent>.0f%%)",
             precision: 2
           }
         }
@@ -267,8 +267,8 @@ module Coinpare
 
         header_past = "Total Price (#{to_symbol} #{number_to_currency(round_to(past_pie.total))})"
         header_curr = [
-          "Total Current Price (#{to_symbol}#{number_to_currency(round_to(curr_pie.total))}) ",
-          add_color("#{arrow} #{to_symbol}#{number_to_currency(round_to(total_change))}", pick_color(total_change)),
+          "Total Current Price (#{to_symbol} #{number_to_currency(round_to(curr_pie.total))}) ",
+          add_color("#{arrow} #{to_symbol} #{number_to_currency(round_to(total_change))}", pick_color(total_change)),
         ].join
 
         table = TTY::Table.new(
