@@ -57,7 +57,18 @@ $ coinpare
 * Create your custom portfolio and track your holdings
 * Auto refresh cryptocurrencies info with a configurable time interval
 
-## Usage
+
+## Contents
+
+
+* [1. Usage](#1-usage)
+* [2. View coins](#2-view-coins)
+* [3. View markets](#3-view-markets)
+* [4. Create portfolio](#4-create-portfolio)
+  * [4.1  Edit coins](#41-edit-coins)
+  * [4.2  Add/remove coins](#42-addremove-coins)
+
+## 1. Usage
 
 To use all available commands, run the folling in your terminal:
 
@@ -69,7 +80,7 @@ You will be presented with the following interface:
 
 ![Interface](https://github.com/piotrmurach/coinpare/raw/master/assets/coinpare_interface.png)
 
-## View coins
+## 2. View coins
 
 You can see top 10 trading info (price, volume, open, high, low etc) of any cyptocurrency in any other currency by executing the following in your terminal:
 
@@ -124,7 +135,7 @@ $ coinpare coins --watch 20   # every 20 seconds
 
 To finish watching for changes hold down `Ctrl+C` key combination.
 
-## View markets
+## 3. View markets
 
 You can get top markets by volume for any currency pair. By default 10 top exchanges for the BTC and USD pair by their total volume across all markets in the last 24 hours are displayed.
 
@@ -163,7 +174,7 @@ $ coinpare markets -w
 
 To finish watching for changes hold down `Ctrl+C` key combination.
 
-## Create portfolio
+## 4. Create portfolio
 
 There is an easy way for you to keep track of all your investments using the `holdings` command.
 When run for the first time, you will be presented with a prompt that will guide you through the portfolio setup and allow you to add as many holdings as you wish.
@@ -175,6 +186,8 @@ $ coinpare holdings
 The prompt may look:
 
 ![CreateHoldings](https://github.com/piotrmurach/coinpare/raw/master/assets/coinpare_create_holdings.png)
+
+### 4.1 Edit coins
 
 All your holdings information will be persisted in your user home directory in a file called `coinpare.toml`. You can edit this file directly using your configured editor by passing the `--edit` flag:
 
@@ -224,7 +237,7 @@ $ coinpare holdings -w
 
 To finish watching for changes hold down `Ctrl+C` key combination.
 
-### Add/remove coins
+### 4.2 Add/remove coins
 
 **Coinpare** allows you to easily add and remove individual coins to and from your holdings portfolio.
 
