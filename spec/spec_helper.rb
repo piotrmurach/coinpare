@@ -13,6 +13,7 @@ require 'webmock/rspec'
 require 'timecop'
 
 ENV['THOR_COLUMNS'] = '80'
+ENV['TTY_TEST'] = 'true'
 
 module TestHelpers
   module Paths
