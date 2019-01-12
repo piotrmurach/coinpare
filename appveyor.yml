@@ -1,6 +1,7 @@
 ---
 install:
   - SET PATH=C:\Ruby%ruby_version%\bin;%PATH%
+  - chcp 65001
   - ruby --version
   - gem --version
   - bundle install
