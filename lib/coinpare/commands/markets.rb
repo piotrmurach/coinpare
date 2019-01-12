@@ -22,8 +22,7 @@ module Coinpare
       end
 
       def execute(input: $stdin, output: $stdout)
-        test = ENV['TTY_TEST'] == 'true'
-        pager = TTY::Pager::BasicPager.new(output: output, enabled: !test)
+        pager = TTY::Pager.new(output: output)
         @spinner.auto_spin
 
         if @options['watch']
@@ -63,7 +62,13 @@ module Coinpare
 
       def print_results(table, output, pager)
         output.puts banner
-        pager.page(table.render(:unicode, padding: [0, 1], alignment: :right))
+        lines = banner.lines.size + 1 + (table.rows_size + 3)
+        rendered = table.render(:unicode, padding: [0, 1], alignment: :right)
+        if lines >= screen.height
+          pager.page rendered
+        else
+          output.print rendered
+        end
         output.puts
       end
 
