@@ -193,7 +193,9 @@ Exchange CCCAGG  Currency USD  Time 01 April 2018 at 12:30:54 PM UTC
     command.config.location_paths.clear
     command.config.prepend_path(tmp_path)
 
-    command.execute(input: input, output: output)
+    expect {
+      command.execute(input: input, output: output)
+    }.to raise_error(SystemExit)
 
     config = TTY::Config.new
     config.read(tmp_path('coinpare.toml'))
@@ -214,7 +216,9 @@ Exchange CCCAGG  Currency USD  Time 01 April 2018 at 12:30:54 PM UTC
     command.config.location_paths.clear
     command.config.prepend_path(tmp_path)
 
-    command.execute(input: input, output: output)
+    expect {
+      command.execute(input: input, output: output)
+    }.to raise_error(SystemExit)
 
     config = TTY::Config.new
     config.read(tmp_path('coinpare.toml'))
