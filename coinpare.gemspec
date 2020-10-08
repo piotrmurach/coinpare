@@ -35,8 +35,7 @@ Gem::Specification.new do |spec|
   spec.add_dependency "toml", "~> 0.2.0"
   spec.add_dependency "timers", "~> 4.1.2"
 
-  spec.add_development_dependency "bundler", "~> 1.16"
-  spec.add_development_dependency "rake", "~> 12.0"
+  spec.add_development_dependency "rake"
   spec.add_development_dependency "rspec", "~> 3.0"
   spec.add_development_dependency "webmock", "~> 3.5"
   spec.add_development_dependency "timecop", "~> 0.9.1"
