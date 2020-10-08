@@ -1,26 +1,24 @@
-lib = File.expand_path("../lib", __FILE__)
-$LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
-require "coinpare/version"
+# frozen_string_literal: true
+
+require_relative "lib/coinpare/version"
 
 Gem::Specification.new do |spec|
   spec.name          = "coinpare"
   spec.license       = "AGPL-3.0"
   spec.version       = Coinpare::VERSION
   spec.authors       = ["Piotr Murach"]
-  spec.email         = [""]
-
+  spec.email         = ["piotr@piotrmurach.com"]
   spec.summary       = %q{Compare cryptocurrency trading data across multiple exchanges and blockchains.}
   spec.description   = %q{Compare cryptocurrency trading data across multiple exchanges and blockchains.}
   spec.homepage      = "https://github.com/piotrmurach/coinpare"
 
-  spec.files         = Dir['lib/**/*']
-  spec.files        += Dir['bin/*', 'coinpare.gemspec']
-  spec.files        += Dir['README.md', 'CHANGELOG.md', 'LICENSE.txt', 'Rakefile']
+  spec.files         = Dir["lib/**/*"]
+  spec.extra_rdoc_files = Dir["README.md", "CHANGELOG.md", "LICENSE.txt"]
   spec.bindir        = "exe"
-  spec.executables   = "coinpare"
+  spec.executables   = ["coinpare"]
   spec.require_paths = ["lib"]
 
-  spec.required_ruby_version = '>= 2.0.0'
+  spec.required_ruby_version = ">= 2.0.0"
 
   spec.add_dependency "tty-color", "~> 0.4"
   spec.add_dependency "tty-config", "~> 0.3.0"
