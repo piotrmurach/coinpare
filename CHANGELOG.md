@@ -1,5 +1,10 @@
 # Change log
 
+## [v0.3.0] - unreleased
+
+### Changed
+* Change gemspec to only package lib files
+
 ## [v0.2.0] - 2019-01-12
 
 ### Added
@@ -15,5 +20,6 @@
 
 * Initial implementation and release
 
+[v0.3.0]: https://github.com/piotrmurach/coinpare/compare/v0.2.0...v0.3.0
 [v0.2.0]: https://github.com/piotrmurach/coinpare/compare/v0.1.0...v0.2.0
 [v0.1.0]: https://github.com/piotrmurach/coinpare/compare/v0.1.0
