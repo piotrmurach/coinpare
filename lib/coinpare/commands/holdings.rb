@@ -138,8 +138,7 @@ module Coinpare
           prefix: "[#{add_color('c', :yellow)}] ",
           input: input, output: output,
           interrupt: -> { puts; exit 1 },
-          enable_color: !@options['no-color'],
-          clear: true
+          enable_color: !@options['no-color']
         )
         prompt.on(:keypress) { |event|
           prompt.trigger(:keydown) if event.value == 'j'
