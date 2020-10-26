@@ -30,7 +30,7 @@ Gem::Specification.new do |spec|
   spec.add_dependency "tty-spinner", "~> 0.9"
   spec.add_dependency "tty-table", "~> 0.12.0"
   spec.add_dependency "pastel", "~> 0.8.0"
-  spec.add_dependency "thor", "~> 0.20.0"
+  spec.add_dependency "thor", "~> 1.0.1"
   spec.add_dependency "toml", "~> 0.2.0"
   spec.add_dependency "timers", "~> 4.1.2"
 
