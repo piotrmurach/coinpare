@@ -4,6 +4,10 @@
 
 ### Changed
 * Change gemspec to only package lib files
+* Update all the tty runtime dependencies
+
+### Fixed
+* Fix Ruby 2.7 keyword conversion errors
 
 ## [v0.2.0] - 2019-01-12
 
