@@ -252,8 +252,8 @@ module Coinpare
         }
 
         [
-          TTY::Pie.new(options.merge(data: past_data)),
-          TTY::Pie.new(options.merge(data: curr_data)),
+          TTY::Pie.new(**options.merge(data: past_data)),
+          TTY::Pie.new(**options.merge(data: curr_data)),
           to_symbol
         ]
       end
