@@ -36,7 +36,9 @@ module Coinpare
 
     def fetch_daily_hist(from_symbol, to_symbol, options)
       url = ["#{API_URL}histoday"]
-      url << "?fsym=BTC&tsym=USD&limit=7&aggregate=7"
+      url << "?fsym=#{from_symbol}&tsym=#{to_symbol}"
+      url << "&limit=#{options['top']}" if options["top"]
+      url << "&aggregate=7"
 
       fetch_json(url.join)
     end
