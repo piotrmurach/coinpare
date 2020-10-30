@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
-require 'net/http'
-require 'json'
+require "net/http"
+require "json"
 
 module Coinpare
   # Handle all data fetching from remote api
@@ -22,7 +22,7 @@ module Coinpare
       uri = URI.parse(url)
       http = Net::HTTP.new(uri.host, uri.port)
       http.read_timeout = 5
-      http.use_ssl = uri.scheme == 'https'
+      http.use_ssl = uri.scheme == "https"
       response = http.start { |req| req.get(uri.request_uri) }
       case response
       when Net::HTTPSuccess
@@ -46,7 +46,7 @@ module Coinpare
     def fetch_top_coins_by_volume(to_symbol, options)
       url = ["#{API_URL}top/totalvol"]
       url << "?tsym=#{to_symbol}"
-      url << "&limit=#{options['top']}&page=0" if options['top']
+      url << "&limit=#{options['top']}&page=0" if options["top"]
 
       fetch_json(url.join)
     end
@@ -55,7 +55,7 @@ module Coinpare
     def fetch_prices(from_symbols, to_symbols, options)
       url = ["#{API_URL}pricemultifull"]
       url << "?fsyms=#{from_symbols}&tsyms=#{to_symbols}"
-      url << "&e=#{options['exchange']}" if options['exchange']
+      url << "&e=#{options['exchange']}" if options["exchange"]
       url << "&tryConversion=true"
 
       fetch_json(url.join)
@@ -65,10 +65,10 @@ module Coinpare
     def fetch_top_exchanges_by_pair(from_symbol, to_symbol, options)
       url = ["#{API_URL}top/exchanges/full"]
       url << "?fsym=#{from_symbol}&tsym=#{to_symbol}"
-      url << "&limit=#{options['top']}&page=0" if options['top']
+      url << "&limit=#{options['top']}&page=0" if options["top"]
 
       fetch_json(url.join)
     end
     module_function :fetch_top_exchanges_by_pair
-  end
-end
+  end # Fetcher
+end # Coinpare
