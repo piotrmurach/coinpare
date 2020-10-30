@@ -32,7 +32,7 @@ Gem::Specification.new do |spec|
   spec.add_dependency "pastel", "~> 0.8.0"
   spec.add_dependency "thor", "~> 1.0.1"
   spec.add_dependency "toml", "~> 0.2.0"
-  spec.add_dependency "timers", "~> 4.3"
+  spec.add_dependency "timers", "~> 4.1.2"
 
   spec.add_development_dependency "rake"
   spec.add_development_dependency "rspec", "~> 3.0"
