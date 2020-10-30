@@ -3,22 +3,22 @@
 module Coinpare
   class Command
     SYMBOLS = {
-      down_arrow: '▼',
-      up_arrow: '▲'
+      down_arrow: "▼",
+      up_arrow: "▲"
     }.freeze
 
     # The default interval for auto updating data
     DEFAULT_INTERVAL = 5
 
-    trap('SIGINT') { exit }
+    trap("SIGINT") { exit }
 
     # Main configuration
     # @api public
     def config
       @config ||= begin
         config = TTY::Config.new
-        config.filename = 'coinpare'
-        config.extname = '.toml'
+        config.filename = "coinpare"
+        config.extname = ".toml"
         config.append_path Dir.pwd
         config.append_path Dir.home
         config
@@ -28,7 +28,7 @@ module Coinpare
     # Time for when the data was fetched
     # @api public
     def timestamp
-      "#{Time.now.strftime("%d %B %Y")} at #{Time.now.strftime("%I:%M:%S %p %Z")}"
+      "#{Time.now.strftime('%d %B %Y')} at #{Time.now.strftime('%I:%M:%S %p %Z')}"
     end
 
     # The exchange, currency & time banner
@@ -43,6 +43,7 @@ module Coinpare
     # @api public
     def pick_arrow(change)
       return if change.zero?
+
       change > 0 ? SYMBOLS[:up_arrow] : SYMBOLS[:down_arrow]
     end
 
@@ -52,6 +53,7 @@ module Coinpare
 
     def pick_color(change)
       return :none if change.zero?
+
       change > 0 ? :green : :red
     end
 
@@ -64,29 +66,30 @@ module Coinpare
     end
 
     def shorten_currency(value)
-      if value > 10 ** 9
-         (value / 10 ** 9).to_f.round(2).to_s + ' B'
-      elsif value > 10 ** 6
-        (value / 10 ** 6).to_f.round(2).to_s + ' M'
+      if value > 10**9
+        "#{(value / 10**9).to_f.round(2)} B"
+      elsif value > 10**6
+        "#{(value / 10**6).to_f.round(2)} M"
       else
         value
       end
     end
 
     def precision(value, decimals = 2)
-      part = value.to_s.split('.')[1]
+      part = value.to_s.split(".")[1]
       return 0 if part.nil?
+
       value.between?(0, 1) ? (part.index(/[^0]/) + decimals) : decimals
     end
 
     def round_to(value, prec = nil)
       prec = precision(value) if prec.nil?
-      "%.#{prec}f" % value
+      format("%.#{prec}f", value)
     end
 
     def number_to_currency(value)
-      whole, part = value.to_s.split('.')
-      part = '.' + part unless part.nil?
+      whole, part = value.to_s.split(".")
+      part = "." + part unless part.nil?
       "#{whole.gsub(/(\d)(?=(\d{3})+(?!\d))/, '\\1,')}#{part}"
     end
 
@@ -106,7 +109,7 @@ module Coinpare
     #
     # @api public
     def cursor
-      require 'tty-cursor'
+      require "tty-cursor"
       TTY::Cursor
     end
 
@@ -116,7 +119,7 @@ module Coinpare
     #
     # @api public
     def editor
-      require 'tty-editor'
+      require "tty-editor"
       TTY::Editor
     end
 
@@ -126,7 +129,7 @@ module Coinpare
     #
     # @api public
     def screen
-      require 'tty-screen'
+      require "tty-screen"
       TTY::Screen
     end
   end # Command
