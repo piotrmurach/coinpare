@@ -4,7 +4,8 @@
 
 ### Changed
 * Change gemspec to only package lib files
-* Update all the tty runtime dependencies
+* Update all the tty and thor runtime dependencies
+* Remove tty-cursor as a dependency
 
 ### Fixed
 * Fix Ruby 2.7 keyword conversion errors
