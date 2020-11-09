@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
-require 'coinpare/commands/coins'
+require "coinpare/commands/coins"
 
-RSpec.describe Coinpare::Commands::Coins, 'coins command' do
+RSpec.describe Coinpare::Commands::Coins, "coins command" do
   before(:each) do
     time = Time.utc(2018, 4, 1, 12, 30, 54)
     Timecop.freeze(time)
@@ -13,9 +13,9 @@ RSpec.describe Coinpare::Commands::Coins, 'coins command' do
 
   it "prints two coins ETH & DASH using USD as base currency" do
     output = StringIO.new
-    prices_path = fixtures_path('pricemultifull.json')
-    options = {"base"=>"USD", "exchange"=>"CCCAGG", "limit"=>10, "no-color"=>true}
-    names = ['ETH', 'DASH']
+    prices_path = fixtures_path("pricemultifull.json")
+    options = { "base"=>"USD", "exchange"=>"CCCAGG", "limit"=>10, "no-color"=>true }
+    names = %w[ETH DASH]
 
     stub_request(:get, "https://min-api.cryptocompare.com/data/pricemultifull")
       .with(query: {"fsyms" => "ETH,DASH",
@@ -44,9 +44,9 @@ Exchange CCCAGG  Currency USD  Time 01 April 2018 at 12:30:54 PM UTC
 
   it "prints two coins BTC, ETH using GBP as base currency", unless: RSpec::Support::OS.windows? do
     output = StringIO.new
-    prices_path = fixtures_path('pricemultifull_gbp.json')
-    options = {"base"=>"GBP", "exchange"=>"CCCAGG", "limit"=>10, "no-color"=>true}
-    names = ['BTC', 'ETH']
+    prices_path = fixtures_path("pricemultifull_gbp.json")
+    options = { "base"=>"GBP", "exchange"=>"CCCAGG", "limit"=>10, "no-color"=>true }
+    names = %w[BTC ETH]
 
     stub_request(:get, "https://min-api.cryptocompare.com/data/pricemultifull")
       .with(query: {"fsyms" => "BTC,ETH",
@@ -75,9 +75,9 @@ Exchange CCCAGG  Currency GBP  Time 01 April 2018 at 12:30:54 PM UTC
 
   it "prints three coins BTC, ETH, LTC using coinbase as exchange" do
     output = StringIO.new
-    prices_path = fixtures_path('pricemultifull_coinbase.json')
-    options = {"base"=>"USD", "exchange"=>"coinbase", "limit"=>10, "no-color"=>true}
-    names = ['BTC', 'ETH', 'LTC']
+    prices_path = fixtures_path("pricemultifull_coinbase.json")
+    options = { "base"=>"USD", "exchange"=>"coinbase", "limit"=>10, "no-color"=>true }
+    names = %w[BTC ETH LTC]
 
     stub_request(:get, "https://min-api.cryptocompare.com/data/pricemultifull")
       .with(query: {"fsyms" => "BTC,ETH,LTC",
@@ -107,17 +107,17 @@ Exchange coinbase  Currency USD  Time 01 April 2018 at 12:30:54 PM UTC
 
   it "prints top 10 coins by volume when no coin symbols specified" do
     output = StringIO.new
-    top_coins_path = fixtures_path('toptotalvol.json')
-    prices_path = fixtures_path('pricemultifull_top10.json')
-    names = %w(BTC ETH EOS TRX LTC BCH XRP HT ETC DASH)
-    options = {"no-color"=>true, "base"=>"USD", "exchange"=>"CCCAGG", "top"=>10}
+    top_coins_path = fixtures_path("toptotalvol.json")
+    prices_path = fixtures_path("pricemultifull_top10.json")
+    names = %w[BTC ETH EOS TRX LTC BCH XRP HT ETC DASH]
+    options = { "no-color"=>true, "base"=>"USD", "exchange"=>"CCCAGG", "top"=>10 }
 
     stub_request(:get, "https://min-api.cryptocompare.com/data/top/totalvol")
       .with(query: {"tsym" => "USD", "limit" => "10", "page" => "0"})
       .to_return(body: File.new(top_coins_path))
 
     stub_request(:get, "https://min-api.cryptocompare.com/data/pricemultifull")
-      .with(query: {"fsyms" => names.join(','),
+      .with(query: {"fsyms" => names.join(","),
                     "tsyms" => "USD",
                     "e" => "CCCAGG",
                     "tryConversion" => "true"})

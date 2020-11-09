@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require 'coinpare/commands/markets'
+require "coinpare/commands/markets"
 
 RSpec.describe Coinpare::Commands::Markets do
   before(:each) do
@@ -11,9 +11,9 @@ RSpec.describe Coinpare::Commands::Markets do
 
   it "prints top markets for BTC & USD" do
     output = StringIO.new
-    prices_path = fixtures_path('pricemultifull_top10.json')
-    exchanges_path = fixtures_path('exchangesfull_top10.json')
-    options = {"base"=>"USD", "top"=>10, "no-color"=>true}
+    prices_path = fixtures_path("pricemultifull_top10.json")
+    exchanges_path = fixtures_path("exchangesfull_top10.json")
+    options = { "base"=>"USD", "top"=>10, "no-color"=>true }
 
     stub_request(:get, "https://min-api.cryptocompare.com/data/pricemultifull")
       .with(query: {"fsyms" => "BTC",
@@ -29,7 +29,7 @@ RSpec.describe Coinpare::Commands::Markets do
                     "page" => "0"})
       .to_return(body: File.new(exchanges_path), status: 200)
 
-    command = Coinpare::Commands::Markets.new('BTC', options)
+    command = Coinpare::Commands::Markets.new("BTC", options)
 
     command.execute(output: output)
 
@@ -53,9 +53,9 @@ Coin BTC  Base Currency USD  Time 01 April 2018 at 12:30:54 PM UTC
 
   it "prints base currency symbols", unless: RSpec::Support::OS.windows? do
     output = StringIO.new
-    prices_path = fixtures_path('pricemultifull_btc_ltc.json')
-    exchanges_path = fixtures_path('exchangesfull_ltc_base.json')
-    options = {"base"=>"LTC", "no-color"=>true}
+    prices_path = fixtures_path("pricemultifull_btc_ltc.json")
+    exchanges_path = fixtures_path("exchangesfull_ltc_base.json")
+    options = { "base"=>"LTC", "no-color"=>true }
 
     stub_request(:get, "https://min-api.cryptocompare.com/data/pricemultifull")
       .with(query: {"fsyms" => "BTC",
@@ -68,7 +68,7 @@ Coin BTC  Base Currency USD  Time 01 April 2018 at 12:30:54 PM UTC
       .with(query: {"fsym" => "BTC", "tsym" => "LTC"})
       .to_return(body: File.new(exchanges_path), status: 200)
 
-    command = Coinpare::Commands::Markets.new('BTC', options)
+    command = Coinpare::Commands::Markets.new("BTC", options)
 
     command.execute(output: output)
 
@@ -92,8 +92,8 @@ Coin BTC  Base Currency LTC  Time 01 April 2018 at 12:30:54 PM UTC
 
   it "prints small precision currencies" do
     output = StringIO.new
-    prices_path = fixtures_path('pricemultifull_top10.json')
-    exchanges_path = fixtures_path('exchangesfull_trx.json')
+    prices_path = fixtures_path("pricemultifull_top10.json")
+    exchanges_path = fixtures_path("exchangesfull_trx.json")
     options = {"base"=>"USD", "no-color"=>true}
 
     stub_request(:get, "https://min-api.cryptocompare.com/data/pricemultifull")
@@ -107,7 +107,7 @@ Coin BTC  Base Currency LTC  Time 01 April 2018 at 12:30:54 PM UTC
       .with(query: {"fsym" => "TRX", "tsym" => "USD"})
       .to_return(body: File.new(exchanges_path), status: 200)
 
-    command = Coinpare::Commands::Markets.new('TRX', options)
+    command = Coinpare::Commands::Markets.new("TRX", options)
 
     command.execute(output: output)
 

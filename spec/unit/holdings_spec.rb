@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require 'coinpare/commands/holdings'
+require "coinpare/commands/holdings"
 
 RSpec.describe Coinpare::Commands::Holdings, type: :cli do
   before(:each) do
@@ -12,8 +12,8 @@ RSpec.describe Coinpare::Commands::Holdings, type: :cli do
   it "creates coinpare.toml file with settings and holdings" do
     output = StringIO.new
     input = StringIO.new
-    options = {"base"=>"USD", "exchange"=>"CCCAGG", "no-color"=>true}
-    prices_path = fixtures_path('pricemultifull_top10.json')
+    options = { "base"=>"USD", "exchange"=>"CCCAGG", "no-color"=>true }
+    prices_path = fixtures_path("pricemultifull_top10.json")
 
     stub_request(:get, "https://min-api.cryptocompare.com/data/pricemultifull")
       .with(query: {"fsyms" => "BTC",
@@ -47,9 +47,9 @@ Exchange CCCAGG  Currency USD  Time 01 April 2018 at 12:30:54 PM UTC
 
   it "reads holdings and settings from coinpare.toml file" do
     output = StringIO.new
-    options = {"base"=>"USD", "exchange"=>"CCCAGG", "no-color"=>true}
-    prices_path = fixtures_path('pricemultifull_top10.json')
-    config_path = fixtures_path('coinpare.toml')
+    options = { "base"=>"USD", "exchange"=>"CCCAGG", "no-color"=>true }
+    prices_path = fixtures_path("pricemultifull_top10.json")
+    config_path = fixtures_path("coinpare.toml")
 
     ::FileUtils.cp(config_path, tmp_path)
 
@@ -87,9 +87,9 @@ Exchange CCCAGG  Currency USD  Time 01 April 2018 at 12:30:54 PM UTC
   it "adds a new holding" do
     input = StringIO.new
     output = StringIO.new
-    options = {"base"=>"USD", "exchange"=>"CCCAGG", "no-color"=>true, "add" => true}
-    prices_path = fixtures_path('pricemultifull_top10.json')
-    config_path = fixtures_path('coinpare.toml')
+    options = { "base"=>"USD", "exchange"=>"CCCAGG", "no-color"=>true, "add" => true }
+    prices_path = fixtures_path("pricemultifull_top10.json")
+    config_path = fixtures_path("coinpare.toml")
 
     ::FileUtils.cp(config_path, tmp_path)
 
@@ -111,7 +111,7 @@ Exchange CCCAGG  Currency USD  Time 01 April 2018 at 12:30:54 PM UTC
     command.execute(input: input, output: output)
 
     config = TTY::Config.new
-    config.read(tmp_path('coinpare.toml'))
+    config.read(tmp_path("coinpare.toml"))
 
     expect(config.fetch(:holdings)).to include({"amount"=>4.0, "name" => "LTC", "price" => 120.0})
 
@@ -135,9 +135,9 @@ Exchange CCCAGG  Currency USD  Time 01 April 2018 at 12:30:54 PM UTC
   it "removes selected holdings" do
     input = StringIO.new
     output = StringIO.new
-    options = {"base"=>"USD", "exchange"=>"CCCAGG", "no-color"=>true, "remove" => true}
-    prices_path = fixtures_path('pricemultifull_top10.json')
-    config_path = fixtures_path('coinpare.toml')
+    options = { "base"=>"USD", "exchange"=>"CCCAGG", "no-color"=>true, "remove" => true }
+    prices_path = fixtures_path("pricemultifull_top10.json")
+    config_path = fixtures_path("coinpare.toml")
 
     ::FileUtils.cp(config_path, tmp_path)
 
@@ -159,7 +159,7 @@ Exchange CCCAGG  Currency USD  Time 01 April 2018 at 12:30:54 PM UTC
     command.execute(input: input, output: output)
 
     config = TTY::Config.new
-    config.read(tmp_path('coinpare.toml'))
+    config.read(tmp_path("coinpare.toml"))
 
     expect(config.fetch(:holdings)).to eq([{"amount"=>1.25, "name" => "BTC", "price" => 8000.0}])
 
@@ -180,8 +180,8 @@ Exchange CCCAGG  Currency USD  Time 01 April 2018 at 12:30:54 PM UTC
   it "removes all holdings with select menu" do
     input = StringIO.new
     output = StringIO.new
-    options = {"base"=>"USD", "exchange"=>"CCCAGG", "no-color"=>true, "remove" => true}
-    config_path = fixtures_path('coinpare.toml')
+    options = { "base"=>"USD", "exchange"=>"CCCAGG", "no-color"=>true, "remove" => true }
+    config_path = fixtures_path("coinpare.toml")
 
     ::FileUtils.cp(config_path, tmp_path)
 
@@ -198,7 +198,7 @@ Exchange CCCAGG  Currency USD  Time 01 April 2018 at 12:30:54 PM UTC
     }.to raise_error(SystemExit)
 
     config = TTY::Config.new
-    config.read(tmp_path('coinpare.toml'))
+    config.read(tmp_path("coinpare.toml"))
 
     expect(config.fetch(:holdings)).to eq(nil)
   end
@@ -206,8 +206,8 @@ Exchange CCCAGG  Currency USD  Time 01 April 2018 at 12:30:54 PM UTC
   it "clears all holdings" do
     input = StringIO.new
     output = StringIO.new
-    options = {"base"=>"USD", "exchange"=>"CCCAGG", "no-color"=>true, "clear" => true}
-    config_path = fixtures_path('coinpare.toml')
+    options = { "base"=>"USD", "exchange"=>"CCCAGG", "no-color"=>true, "clear" => true }
+    config_path = fixtures_path("coinpare.toml")
 
     ::FileUtils.cp(config_path, tmp_path)
 
@@ -221,14 +221,14 @@ Exchange CCCAGG  Currency USD  Time 01 April 2018 at 12:30:54 PM UTC
     }.to raise_error(SystemExit)
 
     config = TTY::Config.new
-    config.read(tmp_path('coinpare.toml'))
+    config.read(tmp_path("coinpare.toml"))
 
     expect(config.fetch(:holdings)).to eq(nil)
   end
 
   it "displays advice when no portfolio configuration can be edited" do
     output = StringIO.new
-    options = {"edit" => true, "base"=>"USD", "exchange"=>"CCCAGG", "no-color"=>true}
+    options = { "edit" => true, "base"=>"USD", "exchange"=>"CCCAGG", "no-color"=>true }
 
     command = Coinpare::Commands::Holdings.new(options)
     command.config.location_paths.clear
@@ -252,9 +252,9 @@ Run "$ coinpare holdings" to setup new altfolio.
       "exchange"=>"CCCAGG",
       "no-color"=>true
     }
-    config_path = fixtures_path('coinpare.toml')
+    config_path = fixtures_path("coinpare.toml")
     ::FileUtils.cp(config_path, tmp_path)
-    prices_path = fixtures_path('pricemultifull_top10.json')
+    prices_path = fixtures_path("pricemultifull_top10.json")
 
     stub_request(:get, "https://min-api.cryptocompare.com/data/pricemultifull")
       .with(query: {"fsyms" => "BTC,ETH,TRX",

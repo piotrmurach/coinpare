@@ -43,7 +43,7 @@ Description:
     out, err, status = Open3.capture3(command)
 
     expect(out).to eq(output)
-    expect(err).to eq('')
+    expect(err).to eq("")
     expect(status.exitstatus).to eq(0)
   end
 end
