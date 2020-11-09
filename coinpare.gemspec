@@ -12,6 +12,13 @@ Gem::Specification.new do |spec|
   spec.description   = %q{Compare cryptocurrency trading data across multiple exchanges and blockchains.}
   spec.homepage      = "https://github.com/piotrmurach/coinpare"
 
+  spec.metadata["allowed_push_host"] = "https://rubygems.org"
+  spec.metadata["bug_tracker_uri"] = "https://github.com/piotrmurach/coinpare/issues"
+  spec.metadata["changelog_uri"] = "https://github.com/piotrmurach/coinpare/blob/master/CHANGELOG.md"
+  spec.metadata["documentation_uri"] = "https://www.rubydoc.info/gems/coinpare"
+  spec.metadata["homepage_uri"] = spec.homepage
+  spec.metadata["source_code_uri"] = "https://github.com/piotrmurach/coinpare"
+
   spec.files         = Dir["lib/**/*"]
   spec.extra_rdoc_files = Dir["README.md", "CHANGELOG.md", "LICENSE.txt"]
   spec.bindir        = "exe"
