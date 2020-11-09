@@ -1,13 +1,13 @@
 # frozen_string_literal: true
 
-require 'pastel'
-require 'tty-pager'
-require 'tty-spinner'
-require 'tty-table'
-require 'timers'
+require "pastel"
+require "tty-pager"
+require "tty-spinner"
+require "tty-table"
+require "timers"
 
-require_relative '../command'
-require_relative '../fetcher'
+require_relative "../command"
+require_relative "../fetcher"
 
 module Coinpare
   module Commands
@@ -17,7 +17,7 @@ module Coinpare
         @options = options
         @pastel = Pastel.new
         @timers = Timers::Group.new
-        @spinner = TTY::Spinner.new(':spinner Fetching data...',
+        @spinner = TTY::Spinner.new(":spinner Fetching data...",
                                     format: :dots, clear: true)
       end
 
@@ -25,9 +25,9 @@ module Coinpare
         pager = TTY::Pager.new(output: output)
         @spinner.auto_spin
 
-        if @options['watch']
+        if @options["watch"]
           output.print cursor.hide
-          interval = @options['watch'].to_f > 0 ? @options['watch'].to_f : DEFAULT_INTERVAL
+          interval = @options["watch"].to_f > 0 ? @options["watch"].to_f : DEFAULT_INTERVAL
           @timers.now_and_every(interval) { display_markets(output, pager) }
           loop { @timers.wait }
         else
@@ -35,7 +35,7 @@ module Coinpare
         end
       ensure
         @spinner.stop
-        if @options['watch']
+        if @options["watch"]
           @timers.cancel
           output.print cursor.clear_screen_down
           output.print cursor.show
@@ -45,7 +45,7 @@ module Coinpare
       def display_markets(output, pager)
         to_symbol = fetch_symbol
         response = Fetcher.fetch_top_exchanges_by_pair(
-                     @name.upcase, @options['base'].upcase, @options)
+                     @name.upcase, @options["base"].upcase, @options)
         return unless response
         table = setup_table(response["Data"]["Exchanges"], to_symbol)
 
@@ -55,9 +55,9 @@ module Coinpare
       end
 
       def clear_output(output, lines)
-        output.print cursor.clear_screen_down if @options['watch']
+        output.print cursor.clear_screen_down if @options["watch"]
         yield if block_given?
-        output.print cursor.up(lines) if @options['watch']
+        output.print cursor.up(lines) if @options["watch"]
       end
 
       def print_results(table, output, pager)
@@ -73,10 +73,10 @@ module Coinpare
       end
 
       def fetch_symbol
-        prices = Fetcher.fetch_prices(
-                   @name.upcase, @options['base'].upcase, @options)
+        prices = Fetcher.fetch_prices(@name.upcase, @options["base"].upcase, @options)
         return unless prices
-        prices['DISPLAY'][@name.upcase][@options['base'].upcase]['TOSYMBOL']
+
+        prices["DISPLAY"][@name.upcase][@options["base"].upcase]["TOSYMBOL"]
       end
 
       def banner
@@ -87,20 +87,20 @@ module Coinpare
 
       def setup_table(data, to_symbol)
         table = TTY::Table.new(header: [
-          { value: 'Market', alignment: :left },
-          'Price',
-          'Chg. 24H',
-          'Chg.% 24H',
-          'Open 24H',
-          'High 24H',
-          'Low 24H',
-          'Direct Vol. 24H',
+          { value: "Market", alignment: :left },
+          "Price",
+          "Chg. 24H",
+          "Chg.% 24H",
+          "Open 24H",
+          "High 24H",
+          "Low 24H",
+          "Direct Vol. 24H"
         ])
 
         data.each do |market|
-          change24h = market['CHANGE24HOUR']
+          change24h = market["CHANGE24HOUR"]
           market_details = [
-            { value: add_color(market['MARKET'], :yellow), alignment: :left },
+            { value: add_color(market["MARKET"], :yellow), alignment: :left },
             add_color("#{to_symbol} #{number_to_currency(round_to(market['PRICE']))}", pick_color(change24h)),
             add_color("#{pick_arrow(change24h)} #{to_symbol} #{number_to_currency(round_to(change24h))}", pick_color(change24h)),
             add_color("#{pick_arrow(change24h)} #{round_to(market['CHANGEPCT24HOUR'] * 100)}%", pick_color(change24h)),

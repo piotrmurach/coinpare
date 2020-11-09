@@ -1,16 +1,16 @@
 # frozen_string_literal: true
 
-require 'toml'
-require 'pastel'
-require 'tty-config'
-require 'tty-prompt'
-require 'tty-spinner'
-require 'tty-table'
-require 'tty-pie'
-require 'timers'
+require "toml"
+require "pastel"
+require "tty-config"
+require "tty-prompt"
+require "tty-spinner"
+require "tty-table"
+require "tty-pie"
+require "timers"
 
-require_relative '../command'
-require_relative '../fetcher'
+require_relative "../command"
+require_relative "../fetcher"
 
 module Coinpare
   module Commands
@@ -23,16 +23,16 @@ module Coinpare
         @timers = Timers::Group.new
         @spinner = TTY::Spinner.new(":spinner Fetching data...",
                                     format: :dots, clear: true)
-        @interval = @options.fetch('watch', DEFAULT_INTERVAL).to_f
-        config.set('settings', 'color', value: !@options['no-color'])
+        @interval = @options.fetch("watch", DEFAULT_INTERVAL).to_f
+        config.set("settings", "color", value: !@options["no-color"])
       end
 
       def execute(input: $stdin, output: $stdout)
         config_saved = config.exist?
-        if config_saved && @options['edit']
+        if config_saved && @options["edit"]
           editor.open(config.source_file)
           return
-        elsif @options['edit']
+        elsif @options["edit"]
           output.puts "Sorry, no holdings configuration found."
           output.print "Run \""
           output.print "$ #{add_color('coinpare holdings', :yellow)}\" "
@@ -42,29 +42,29 @@ module Coinpare
 
         config.read if config_saved
 
-        holdings = config.fetch('holdings')
+        holdings = config.fetch("holdings")
         if holdings.nil? || (holdings && holdings.empty?)
           info = setup_portfolio(input, output)
           config.merge(info)
-        elsif @options['add']
+        elsif @options["add"]
           coin_info = add_coin(input, output)
-          config.append(coin_info, to: ['holdings'])
-        elsif @options['remove']
+          config.append(coin_info, to: ["holdings"])
+        elsif @options["remove"]
           coin_info = remove_coin(input, output)
-          config.remove(*coin_info, from: ['holdings'])
-        elsif @options['clear']
+          config.remove(*coin_info, from: ["holdings"])
+        elsif @options["clear"]
           prompt = create_prompt(input, output)
-          answer = prompt.yes?('Do you want to remove all holdings?')
+          answer = prompt.yes?("Do you want to remove all holdings?")
           if answer
-            config.delete('holdings')
+            config.delete("holdings")
             output.puts add_color("All holdings removed", :red)
           end
         end
 
-        holdings = config.fetch('holdings')
+        holdings = config.fetch("holdings")
         no_holdings_left = holdings.nil? || (holdings && holdings.empty?)
         if no_holdings_left
-          config.delete('holdings')
+          config.delete("holdings")
         end
 
         # Persist current configuration
@@ -77,15 +77,15 @@ module Coinpare
         end
 
         @spinner.auto_spin
-        settings = config.fetch('settings')
+        settings = config.fetch("settings")
         # command options take precedence over config settings
         overridden_settings = {}
-        overridden_settings['exchange'] = @options.fetch('exchange', settings.fetch('exchange'))
-        overridden_settings['base']     = @options.fetch('base', settings.fetch('base'))
-        holdings = config.fetch('holdings') { [] }
-        names = holdings.map { |c| c['name'] }
+        overridden_settings["exchange"] = @options.fetch("exchange", settings.fetch("exchange"))
+        overridden_settings["base"]     = @options.fetch("base", settings.fetch("base"))
+        holdings = config.fetch("holdings") { [] }
+        names = holdings.map { |c| c["name"] }
 
-        if @options['watch']
+        if @options["watch"]
           output.print cursor.hide
           @timers.now_and_every(@interval) do
             display_coins(output, names, overridden_settings)
@@ -96,7 +96,7 @@ module Coinpare
         end
       ensure
         @spinner.stop
-        if @options['watch']
+        if @options["watch"]
           @timers.cancel
           output.print cursor.clear_screen_down
           output.print cursor.show
@@ -104,14 +104,14 @@ module Coinpare
       end
 
       def display_coins(output, names, overridden_settings)
-        response = Fetcher.fetch_prices(names.join(','),
-                                        overridden_settings['base'].upcase,
+        response = Fetcher.fetch_prices(names.join(","),
+                                        overridden_settings["base"].upcase,
                                         overridden_settings)
         return unless response
-        table = if @options['pie']
-                  setup_table_with_pies(response['RAW'], response['DISPLAY'])
+        table = if @options["pie"]
+                  setup_table_with_pies(response["RAW"], response["DISPLAY"])
                 else
-                  setup_table(response['RAW'], response['DISPLAY'])
+                  setup_table(response["RAW"], response["DISPLAY"])
                 end
 
         @spinner.stop
@@ -119,7 +119,7 @@ module Coinpare
         lines = banner(overridden_settings).lines.size + 1 + (table.rows_size + 3)
         clear_output(output, lines) do
           output.puts banner(overridden_settings)
-          if @options['pie']
+          if @options["pie"]
             output.puts table.render(:unicode, padding: [0, 2])
           else
             output.puts table.render(:unicode, padding: [0, 1], alignment: :right)
@@ -128,9 +128,9 @@ module Coinpare
       end
 
       def clear_output(output, lines)
-        output.print cursor.clear_screen_down if @options['watch']
+        output.print cursor.clear_screen_down if @options["watch"]
         yield if block_given?
-        output.print cursor.up(lines) if @options['watch']
+        output.print cursor.up(lines) if @options["watch"]
       end
 
       def create_prompt(input, output)
@@ -138,31 +138,31 @@ module Coinpare
           prefix: "[#{add_color('c', :yellow)}] ",
           input: input, output: output,
           interrupt: -> { puts; exit 1 },
-          enable_color: !@options['no-color']
+          enable_color: !@options["no-color"]
         )
         prompt.on(:keypress) { |event|
-          prompt.trigger(:keydown) if event.value == 'j'
-          prompt.trigger(:keyup) if event.value == 'k'
+          prompt.trigger(:keydown) if event.value == "j"
+          prompt.trigger(:keyup) if event.value == "k"
         }
         prompt
       end
 
       def ask_coin
         -> (prompt) do
-          key('name').ask('What coin do you own?') do |q|
-            q.default 'BTC'
-            q.required(true, 'You need to provide a coin')
-            q.validate(/\w{2,}/, 'Currency can only be chars.')
+          key("name").ask("What coin do you own?") do |q|
+            q.default "BTC"
+            q.required(true, "You need to provide a coin")
+            q.validate(/\w{2,}/, "Currency can only be chars.")
             q.convert ->(coin) { coin.upcase }
           end
-          key('amount').ask('What amount?') do |q|
-            q.required(true, 'You need to provide an amount')
-            q.validate(/[\d.]+/, 'Invalid amount provided')
+          key("amount").ask("What amount?") do |q|
+            q.required(true, "You need to provide an amount")
+            q.validate(/[\d.]+/, "Invalid amount provided")
             q.convert ->(am) { am.to_f }
           end
-          key('price').ask('At what price per coin?') do |q|
-            q.required(true, 'You need to provide a price')
-            q.validate(/[\d.]+/, 'Invalid prince provided')
+          key("price").ask("At what price per coin?") do |q|
+            q.required(true, "You need to provide a price")
+            q.validate(/[\d.]+/, "Invalid prince provided")
             q.convert ->(p) { p.to_f }
           end
         end
@@ -179,8 +179,8 @@ module Coinpare
 
       def remove_coin(input, output)
         prompt = create_prompt(input, output)
-        holdings = config.fetch('holdings')
-        data = prompt.multi_select('Which hodlings to remove?') do |menu|
+        holdings = config.fetch("holdings")
+        data = prompt.multi_select("Which hodlings to remove?") do |menu|
           holdings.each do |holding|
             menu.choice "#{holding['name']} (#{holding['amount']})", holding
           end
@@ -197,26 +197,26 @@ module Coinpare
         prompt = create_prompt(input, output)
         context = self
         data = prompt.collect do
-          key('settings') do
-            key('base').ask('What base currency to convert holdings to?') do |q|
+          key("settings") do
+            key("base").ask("What base currency to convert holdings to?") do |q|
               q.default "USD"
               q.convert ->(b) { b.upcase }
-              q.validate(/\w{3}/, 'Currency code needs to be 3 chars long')
+              q.validate(/\w{3}/, "Currency code needs to be 3 chars long")
             end
-            key('exchange').ask('What exchange would you like to use?') do |q|
+            key("exchange").ask("What exchange would you like to use?") do |q|
               q.default "CCCAGG"
               q.required true
             end
           end
 
           while prompt.yes?("Do you want to add coin to your altfolio?")
-            key('holdings').values(&context.ask_coin)
+            key("holdings").values(&context.ask_coin)
           end
         end
 
         lines = 4 + # intro
                 2 + # base + exchange
-                data['holdings'].size * 4 + 1
+                data["holdings"].size * 4 + 1
         output.print cursor.up(lines)
         output.print cursor.clear_screen_down
 
@@ -225,24 +225,24 @@ module Coinpare
 
       def create_pie_charts(raw_data, display_data)
         colors = %i[yellow blue green cyan magenta red]
-        radius = @options['pie'].to_i > 0 ? @options['pie'].to_i : DEFAULT_PIE_RADIUS
-        base   = @options.fetch('base', config.fetch('settings', 'base')).upcase
+        radius = @options["pie"].to_i > 0 ? @options["pie"].to_i : DEFAULT_PIE_RADIUS
+        base   = @options.fetch("base", config.fetch("settings", "base")).upcase
         to_symbol = nil
         past_data = []
         curr_data = []
 
-        config.fetch('holdings').each do |coin|
-          coin_data = raw_data[coin['name']][base]
-          to_symbol = display_data[coin['name']][base]['TOSYMBOL']
-          past_price = coin['amount'] * coin['price']
-          curr_price = coin['amount'] * coin_data['PRICE']
+        config.fetch("holdings").each do |coin|
+          coin_data = raw_data[coin["name"]][base]
+          to_symbol = display_data[coin["name"]][base]["TOSYMBOL"]
+          past_price = coin["amount"] * coin["price"]
+          curr_price = coin["amount"] * coin_data["PRICE"]
 
-          past_data << { name: coin['name'], value: past_price }
-          curr_data << { name: coin['name'], value: curr_price }
+          past_data << { name: coin["name"], value: past_price }
+          curr_data << { name: coin["name"], value: curr_price }
         end
 
         options = {
-          colors: !@options['no-color'] && colors,
+          colors: !@options["no-color"] && colors,
           radius: radius,
           legend: {
             left: 2,
@@ -272,8 +272,8 @@ module Coinpare
 
         table = TTY::Table.new(
           header: [
-            {value: header_past, alignment: :center},
-            {value: header_curr, alignment: :center}
+            { value: header_past, alignment: :center },
+            { value: header_curr, alignment: :center }
           ]
         )
         past_pie.to_s.split("\n").zip(curr_pie.to_s.split("\n")).each do |past_part, curr_part|
@@ -283,36 +283,36 @@ module Coinpare
       end
 
       def setup_table(raw_data, display_data)
-        base = @options.fetch('base', config.fetch('settings', 'base')).upcase
+        base = @options.fetch("base", config.fetch("settings", "base")).upcase
         total_buy = 0
         total = 0
         to_symbol = nil
 
         table = TTY::Table.new(header: [
-          { value: 'Coin', alignment: :left },
-          'Amount',
-          'Price',
-          'Total Price',
-          'Cur. Price',
-          'Total Cur. Price',
-          'Change',
-          'Change%'
+          { value: "Coin", alignment: :left },
+          "Amount",
+          "Price",
+          "Total Price",
+          "Cur. Price",
+          "Total Cur. Price",
+          "Change",
+          "Change%"
         ])
 
-        config.fetch('holdings').each do |coin|
-          coin_data = raw_data[coin['name']][base]
-          coin_display_data = display_data[coin['name']][base]
-          past_price = coin['amount'] * coin['price']
-          curr_price = coin['amount'] * coin_data['PRICE']
-          to_symbol = coin_display_data['TOSYMBOL']
+        config.fetch("holdings").each do |coin|
+          coin_data = raw_data[coin["name"]][base]
+          coin_display_data = display_data[coin["name"]][base]
+          past_price = coin["amount"] * coin["price"]
+          curr_price = coin["amount"] * coin_data["PRICE"]
+          to_symbol = coin_display_data["TOSYMBOL"]
           change = curr_price - past_price
           arrow = pick_arrow(change)
           total_buy +=  past_price
           total += curr_price
 
           coin_details = [
-            { value: add_color(coin['name'], :yellow), alignment: :left },
-            coin['amount'],
+            { value: add_color(coin["name"], :yellow), alignment: :left },
+            coin["amount"],
             "#{to_symbol} #{number_to_currency(round_to(coin['price']))}",
             "#{to_symbol} #{number_to_currency(round_to(past_price))}",
             add_color("#{to_symbol} #{number_to_currency(round_to(coin_data['PRICE']))}", pick_color(change)),
@@ -327,8 +327,8 @@ module Coinpare
         arrow = pick_arrow(total_change)
 
         table << [
-          { value: add_color('ALL', :cyan), alignment: :left }, '-', '-',
-          "#{to_symbol} #{number_to_currency(round_to(total_buy))}", '-',
+          { value: add_color("ALL", :cyan), alignment: :left }, "-", "-",
+          "#{to_symbol} #{number_to_currency(round_to(total_buy))}", "-",
           add_color("#{to_symbol} #{number_to_currency(round_to(total))}", pick_color(total_change)),
           add_color("#{arrow} #{to_symbol} #{number_to_currency(round_to(total_change))}", pick_color(total_change)),
           add_color("#{arrow} #{round_to(percent_change(total_buy, total))}%", pick_color(total_change))
