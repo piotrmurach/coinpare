@@ -33,6 +33,7 @@ Gem::Specification.new do |spec|
   spec.add_dependency "tty-pager", "~> 0.14"
   spec.add_dependency "tty-pie", "~> 0.4.0"
   spec.add_dependency "tty-prompt", "~> 0.22"
+  spec.add_dependency "tty-screen", "~> 0.8"
   spec.add_dependency "tty-spinner", "~> 0.9"
   spec.add_dependency "tty-table", "~> 0.12.0"
   spec.add_dependency "pastel", "~> 0.8.0"
