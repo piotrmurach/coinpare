@@ -1,11 +1,12 @@
 # Change log
 
-## [v0.3.0] - unreleased
+## [v0.3.0] - 2020-11-09
 
 ### Changed
-* Change gemspec to only package lib files
+* Change gemspec to only package lib files and include metadata
 * Update all the tty and thor runtime dependencies
-* Remove tty-cursor as a dependency
+* Remove tty-color as a dependency
+* Change to make tty-screen an explicit runtime dependency
 
 ### Fixed
 * Fix Ruby 2.7 keyword conversion errors
