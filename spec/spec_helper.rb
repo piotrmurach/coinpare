@@ -16,6 +16,7 @@ if ENV["COVERAGE"] == "true"
 end
 require "bundler/setup"
 require "coinpare"
+require "fileutils"
 require "open3"
 require "webmock/rspec"
 require "timecop"
